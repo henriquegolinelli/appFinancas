@@ -24,8 +24,7 @@ export const CardItemLancamento = () => {
                 title={`${item.title} ${index + 1}`} 
                 description={`${item.description}`}
                 accessoryLeft={renderIconLeft}
-                accessoryRight={<Text>R$150,00</Text>}   
-                 
+                accessoryRight={<Text>R$150,00</Text>}
             />
             <Divider></Divider>
         </>
@@ -34,9 +33,10 @@ export const CardItemLancamento = () => {
 
     return (
         <View>
-            <List 
+            <List
                 data={data}
                 renderItem={renderItem}
+                scrollEnabled={false}
             />
         </View>
     )

@@ -45,7 +45,7 @@ export const DashboardView = ({navigation}) => {
             <Layout style={{flex: 1}}>
                 <TopNavigation accessoryRight={renderDrawerAction} alignment='center' title={props => <Text {...props} style={{color: 'white', fontSize: 18}}>DASHBOARD</Text>} style={{backgroundColor: '#2f9e41'}}/>
                 <Layout style={{flex: 1}}>
-                    <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: 'center', padding: 20, gap: 20}}>
+                    <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: 'center', padding: 20, gap: 20}} horizontal={false}>
                         
                         {/* Saldo Total */}
                         <Card header={headerSaldoTotal} style={{width: '100%', borderRadius: 10, elevation: 10}}>

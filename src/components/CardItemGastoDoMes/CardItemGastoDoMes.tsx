@@ -34,6 +34,7 @@ export const CardItemGastoDoMes = () => {
             <List 
                 data={data}
                 renderItem={renderItem}
+                scrollEnabled={false}
             />
         </View>
     )

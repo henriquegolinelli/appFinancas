@@ -24,7 +24,6 @@ export const CardItemLancamento = () => {
                 title={`${item.title} ${index + 1}`} 
                 description={`${item.description}`}
                 accessoryLeft={renderIconLeft}
-                accessoryRight={<Text>R$150,00</Text>}
             />
             <Divider></Divider>
         </>

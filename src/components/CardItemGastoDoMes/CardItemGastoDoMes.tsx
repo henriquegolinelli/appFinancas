@@ -21,8 +21,7 @@ export const CardItemGastoDoMes = () => {
             <ListItem 
                 style={{}}
                 title={`${item.title} ${index + 1}`} 
-                accessoryLeft={renderIconLeft}
-                accessoryRight={<Text>R$150,00</Text>}   
+                accessoryLeft={renderIconLeft} 
             />
             <Divider></Divider>
         </>

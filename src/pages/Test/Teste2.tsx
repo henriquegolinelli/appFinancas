@@ -9,7 +9,7 @@ const MenuIcon = (props:IconProps): IconElement => (
     <Icon {...props} name='menu'/>
 )
 
-export const TestView = observer(({navigation}: any) => {
+export const TestView2 = observer(({navigation}: any) => {
     const {increment, decrement, count} = useMobxContext()
 
     const renderMenuIcon = () => (

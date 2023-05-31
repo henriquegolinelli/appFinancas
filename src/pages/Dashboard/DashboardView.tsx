@@ -37,7 +37,7 @@ export const DashboardView = ({navigation}) => {
     // footer Saldo Total
     const footerSaldoTotal = (props: ViewProps) => (
         <View {...props}>
-            <Button status='danger' onPress={toggleDetails}>Ver Detalhes</Button>
+            <Button status='danger' onPress={toggleDetails}><Text>{details?'Ocultar':'Ver'} Detalhes</Text></Button>
         </View>
     )
 

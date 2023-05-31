@@ -1,5 +1,5 @@
-import {View} from 'react-native'
-import {List, ListItem, Icon, IconElement, IconProps, Text, Divider} from '@ui-kitten/components'
+import {View, StyleSheet} from 'react-native'
+import {List, ListItem, Icon, IconElement, IconProps, Text, Divider, Button} from '@ui-kitten/components'
 
 interface CardItemLancamentoProps {
     title: string
@@ -19,12 +19,11 @@ export const CardItemLancamento = () => {
 
     const renderItem = ({item, index}: {item: CardItemLancamentoProps; index: number}) => (
         <>
-            <ListItem 
-                style={{}}
-                title={`${item.title} ${index + 1}`} 
-                description={`${item.description}`}
-                accessoryLeft={renderIconLeft}
-            />
+            <ListItem>
+                <View style={styles.listItemContainer}>
+                    <Button style={styles.buttonIcon} accessoryLeft={renderIconLeft} status='danger'></Button>
+                </View>
+            </ListItem>
             <Divider></Divider>
         </>
         
@@ -40,3 +39,15 @@ export const CardItemLancamento = () => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+
+    listItemContainer: {
+        flex: 1
+    },
+
+    buttonIcon: {
+        width: 50,
+        height: 50,
+    }
+})

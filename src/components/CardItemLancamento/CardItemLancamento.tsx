@@ -1,5 +1,5 @@
 import {View, StyleSheet} from 'react-native'
-import {List, ListItem, Icon, IconElement, IconProps, Text, Divider, Button} from '@ui-kitten/components'
+import {List, ListItem, Icon, IconElement, IconProps, Text, Divider, Button, Layout} from '@ui-kitten/components'
 
 interface CardItemLancamentoProps {
     nome: string
@@ -21,17 +21,27 @@ export const CardItemLancamento = () => {
         <Icon {...props} name='cube'></Icon>
     )
 
+    const BoxIcon = (props:IconProps): React.ReactElement => (
+        <Layout>
+            <Icon {...props} name='cube' fill='black' style={{width: 30, height: 30}}></Icon>
+        </Layout>
+    )
+
     const renderItem = ({item, index}: {item: CardItemLancamentoProps, index: number}) => (
         <>
-            <ListItem accessoryLeft={renderIconLeft}>
+            <ListItem>
                 <View style={styles.listItemContainer}>
-                    <View>
+                    <View style={{gap: 5}}>
                         <View style={styles.container}>
                             <Text>{item.data}</Text>
                             <Text> - </Text>
                             <Text style={{fontWeight: 'bold'}}>{item.nome}</Text>
                         </View>
-                        <Text>{item.descricao}</Text>
+                        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                            <BoxIcon></BoxIcon>
+                            <Text> {item.descricao}</Text>
+                        </View>
+                        
                     </View>
                     <View>
                         <Text status='danger' style={styles.itemPrice}>R$ {item.preco}</Text>

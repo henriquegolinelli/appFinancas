@@ -6,9 +6,11 @@ import { default as theme } from './src/themes/custom-theme.json'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { AppNavigator } from './src/routes/AppNavigator';
-import { testeDB } from './src/configs/database';
+import { initDB } from './src/configs/database';
 
 export default function App() {
+
+  initDB()
 
   return (
     <>

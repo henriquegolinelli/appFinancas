@@ -1,13 +1,14 @@
-import {View} from 'react-native'
+import {View, StyleSheet} from 'react-native'
 import {List, ListItem, Icon, IconElement, IconProps, Text, Divider} from '@ui-kitten/components'
 
 interface CardItemGastoDoMesProps {
     title: string
-    description: string
+    description: number
 }
 
 const data = new Array(4).fill({
     title: 'Alimentação',
+    description: 500
 })
 
 export const CardItemGastoDoMes = () => {
@@ -18,11 +19,15 @@ export const CardItemGastoDoMes = () => {
 
     const renderItem = ({item, index}: {item: CardItemGastoDoMesProps; index: number}) => (
         <>
-            <ListItem 
-                style={{}}
-                title={`${item.title} ${index + 1}`} 
-                accessoryLeft={renderIconLeft} 
-            />
+            <ListItem>
+                <View style={styles.container}>
+                    <View style={styles.flexRowView}>
+                        <Icon name='smiling-face-outline' style={styles.iconLeft}></Icon>
+                        <Text style={{marginLeft: 20}}>{item.title}</Text>
+                        <Text style={{marginLeft: 'auto'}} status='danger'>R$ {item.description.toFixed(2)}</Text>
+                    </View>
+                </View>
+            </ListItem>
             <Divider></Divider>
         </>
         
@@ -38,3 +43,20 @@ export const CardItemGastoDoMes = () => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+
+    flexRowView: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
+    iconLeft: {
+        width: 35,
+        height: 35,
+        tintColor: 'black'
+    }
+})

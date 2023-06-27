@@ -4,12 +4,16 @@ import { DashboardView } from "../pages/Dashboard/DashboardView";
 import { TestView } from "../pages/Test/Test";
 import { Provider } from "react-redux";
 import store from "../redux";
+import { FluxoCaixaView } from "../pages/FluxoCaixa/FluxoCaixa";
+import { Movimentacoes } from "../pages/Movimentacoes/Movimentacoes";
 
 const Drawer = createDrawerNavigator();
 
 const HomeNavigator = () => (
     <Drawer.Navigator screenOptions={{ headerShown: false, drawerPosition: 'right', drawerStyle: { borderTopStartRadius: 20, borderBottomStartRadius: 20 } }}>
         <Drawer.Screen name="Dashboard" component={DashboardView} />
+        <Drawer.Screen name="FluxoCaixa" component={FluxoCaixaView} options={{title: 'Fluxo de Caixa'}}/>
+        <Drawer.Screen name="Movimentacoes" component={Movimentacoes} options={{title: 'Movimentações'}}/>
         <Drawer.Screen name="Teste" component={TestView} />
     </Drawer.Navigator>
 )

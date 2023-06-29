@@ -7,6 +7,7 @@ import store from "../redux";
 import { FluxoCaixaView } from "../pages/FluxoCaixa/FluxoCaixa";
 import { Movimentacoes } from "../pages/Movimentacoes/Movimentacoes";
 import { Categorias } from "../pages/Categorias/Categorias";
+import { ContasView } from "../pages/Contas/Contas";
 
 const Drawer = createDrawerNavigator();
 
@@ -16,6 +17,7 @@ const HomeNavigator = () => (
         <Drawer.Screen name="FluxoCaixa" component={FluxoCaixaView} options={{title: 'Fluxo de Caixa'}}/>
         <Drawer.Screen name="Movimentacoes" component={Movimentacoes} options={{title: 'Movimentações'}}/>
         <Drawer.Screen name="Categorias" component={Categorias} options={{title: 'Categorias'}}/>
+        <Drawer.Screen name="Contas" component={ContasView} options={{title: 'Contas'}}/>
         <Drawer.Screen name="Teste" component={TestView} />
     </Drawer.Navigator>
 )

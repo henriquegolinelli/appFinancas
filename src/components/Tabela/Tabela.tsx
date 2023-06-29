@@ -24,7 +24,7 @@ export const Tabela = (props:TabelaProps) => {
                         <Text style={styles.textItem}>{item.categoria}</Text>
                     </View>
                     <View style={{width: '35%'}}>
-                        <Text style={styles.textItem} status={item.tipo == 'D'?'danger':'success'}>R$ {item.valor.toFixed(2)}</Text>
+                        <Text style={styles.textItem} status={item.tipo == 'D'?'danger':'success'}>R$ {item.valor.toLocaleString('pt-br', {minimumFractionDigits: 2})}</Text>
                     </View>
                     <View style={{width: '5%'}}>
                         <Text style={styles.textItem} status={item.tipo == 'D'?'danger':'success'}>{item.tipo}</Text>

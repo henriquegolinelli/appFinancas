@@ -6,7 +6,7 @@ export const Styles = StyleSheet.create({
     },
 
     scrollViewContainer: {
-        flexGrow: 1,
+        // flexGrow: 1,
         alignItems: 'center',
         padding: 20,
         gap: 20
@@ -29,5 +29,21 @@ export const Styles = StyleSheet.create({
     divider: {
         marginTop: 10,
         marginBottom: 20
-    }
+    },
+
+    greenBackground: {
+        backgroundColor: '#2f9e41'
+    },
+    
+    label: {
+        marginVertical: 3
+    },
+
+    datepickerSpacing: {
+        marginBottom: 10
+    },
+
+    card: {
+        elevation: 8
+    },
 })

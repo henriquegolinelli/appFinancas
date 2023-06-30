@@ -4,6 +4,9 @@ import { ScrollView, StyleSheet, View, ViewProps } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Tabela } from "../../components/Tabela/Tabela"
 
+import { Styles as styles } from "../../common/style/stylesheet"
+import { FormMovimentacoes } from "./components/FormMovimentacoes"
+
 const MenuIcon = (props:IconProps): IconElement => (
     <Icon {...props} name='menu' />
 )
@@ -18,23 +21,7 @@ const data = [
     {data: '05/12/2022', categoria: 'Empréstimo', valor: 600.00, tipo: 'R'},
 ]
 
-// Dados que irão aparecer como opções no SELECT
-const dataSelectContas = [
-    'Principal (Corrente)',
-    'Secundária (Poupança)'
-]
-
 export const Movimentacoes = ({navigation}) => {
-
-    /**
-     * States do formulário
-     */
-    const [selectConta, setSelectConta] = useState<IndexPath>(new IndexPath(0))
-
-    /**
-    * Funções
-    */
-    const displayValueContas = dataSelectContas[selectConta.row]
 
     /**
      * Renders
@@ -44,10 +31,6 @@ export const Movimentacoes = ({navigation}) => {
     )
     const renderBackAction = () => (
         <TopNavigationAction icon={BackIcon} onPress={()=>{navigation.goBack()}}/>
-    )
-
-    const renderSelectOptionsContas = (title) => (
-        <SelectItem title={title} key={title}/>
     )
 
     /**
@@ -66,14 +49,8 @@ export const Movimentacoes = ({navigation}) => {
                 <Layout style={styles.container}>
                     <ScrollView contentContainerStyle={styles.scrollViewContainer} horizontal={false}>
                         {/* Formulário */}
-                        <Layout style={[styles.container, {width: '100%', paddingHorizontal: 30}]}>
-                            <Text style={styles.label}>Conta</Text>
-                            <Select selectedIndex={selectConta} onSelect={(index:IndexPath)=>setSelectConta(index)} value={displayValueContas}>
-                                {dataSelectContas.map(renderSelectOptionsContas)}
-                            </Select>
+                        <FormMovimentacoes />
 
-                            <Button style={{marginTop: 10}}>Consultar</Button>
-                        </Layout>
                         <Layout style={[styles.container, {width:'100%'}]}>
                             <Card style={styles.card} header={headerCardMovimentacoes}>
                                 
@@ -88,26 +65,3 @@ export const Movimentacoes = ({navigation}) => {
         </SafeAreaView>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-    greenBackground: {
-        backgroundColor: '#2f9e41'
-    },
-    scrollViewContainer: {
-        alignItems: 'center', 
-        padding: 20, 
-        gap: 20
-    },
-    label: {
-        marginVertical: 3
-    },
-    datepickerSpacing: {
-        marginBottom: 10
-    },
-    card: {
-        elevation: 8
-    }
-})

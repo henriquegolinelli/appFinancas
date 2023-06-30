@@ -2,6 +2,7 @@ import { Layout, TopNavigation, Text, TopNavigationAction, IconProps, IconElemen
 import { useState } from "react"
 import { ScrollView, StyleSheet, View, ViewProps } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { ModalAddCategoria } from "./components/ModalAddCategoria"
 
 interface ListItemProps {
     nome: string
@@ -29,10 +30,7 @@ const dataReceitas = new Array(4).fill({
     icon: <Icon style={{tintColor: 'black', width: 30, height: 30}} name="menu"/>
 })
 
-const dataTipos = [
-    'Despesas',
-    'Receitas'
-]
+
 
 export const Categorias = ({navigation}) => {
 
@@ -41,15 +39,13 @@ export const Categorias = ({navigation}) => {
      */
     const [indexPage, setIndexPage] = useState(0)
 
-    const [modalAddCategoria, setModalAddCategoria] = useState<boolean>(false)
+    const [modalOpen, setModalOpen] = useState<boolean>(false)
 
-    const [inputNomeCategoria, setInputNomeCategoria] = useState<string>('')
-    const [selectIndexTipo, setSelectIndexTipo] = useState<IndexPath>(new IndexPath(0))
 
     /**
     * Funções
     */
-    const displayValueTipo = dataTipos[selectIndexTipo.row]
+
 
     /**
      * Renders
@@ -65,10 +61,6 @@ export const Categorias = ({navigation}) => {
         <ListItem accessoryLeft={item.icon} title={item.nome}/>
     )
 
-    const renderItemSelect = (title) => (
-        <SelectItem title={title} key={title}/>
-    )
-
     /**
      * Card header / footer
      */
@@ -80,12 +72,6 @@ export const Categorias = ({navigation}) => {
     const headerCardReceitas = (props:ViewProps) => (
         <View {...props}>
             <Text category="h5" style={{textAlign: 'center'}}>Receitas</Text>
-        </View>
-    )
-
-    const headerModalCardAdd = (props:ViewProps) => (
-        <View {...props}>
-            <Text category="h5" style={{textAlign: 'center'}}>Criar Categoria</Text>
         </View>
     )
 
@@ -120,23 +106,10 @@ export const Categorias = ({navigation}) => {
                         </View>
                     </View>
                     <View style={{backgroundColor: '#fff', height: 70, elevation: 10, borderTopStartRadius: 10, borderTopEndRadius: 10, padding: 5, borderWidth: 0.3, borderBottomWidth: 0.1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                        <Button style={{backgroundColor: 'black', borderColor: null, width: 140, height: 50, borderRadius: 10}} onPress={()=>setModalAddCategoria(true)}>Criar Categoria</Button>
+                        <Button style={{backgroundColor: 'black', borderColor: null, width: 140, height: 50, borderRadius: 10}} onPress={()=>setModalOpen(true)}>Criar Categoria</Button>
                     </View>
-                    <Modal visible={modalAddCategoria} backdropStyle={styles.backdrop} onBackdropPress={()=>setModalAddCategoria(false)} style={{width: '85%'}}>
-                        <Card header={headerModalCardAdd}>
-                            <Text style={[styles.label]}>Nome da Categoria</Text>
-                            <Input placeholder="Ex.: Alimentação" style={{marginBottom: 10}} value={inputNomeCategoria} onChangeText={setInputNomeCategoria}></Input>
-
-                            <Text style={styles.label}>Tipo</Text>
-                            <Select selectedIndex={selectIndexTipo} onSelect={(index:IndexPath) => setSelectIndexTipo(index)} value={displayValueTipo} style={{marginBottom: 10}}>
-                                {dataTipos.map(renderItemSelect)}
-                            </Select>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                                <Button status="danger" style={{width: '45%'}} onPress={()=>{setModalAddCategoria(false)}}>Cancelar</Button>
-                                <Button status="success" style={{width: '45%'}}>Cadastrar</Button>
-                            </View>
-                        </Card>
-                    </Modal>
+                    {/* Modal Add Categoria */}
+                    <ModalAddCategoria open={modalOpen} setOpen={open => setModalOpen(open)}/>
                 </Layout>
             </Layout>
         </SafeAreaView>

@@ -3,6 +3,9 @@ import { useState } from "react"
 import { ScrollView, StyleSheet, View, ViewProps } from "react-native"
 import CurrencyInput from "react-native-currency-input"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { ModalAddConta } from "./components/ModalAddConta"
+
+import { Styles as styles } from "../../common/style/stylesheet"
 
 interface ListItemProps {
     nome: string
@@ -34,10 +37,6 @@ export const ContasView = ({navigation}) => {
      * States da página e formulário
      */
     const [modalAddConta ,setModalAddConta] = useState<boolean>(false)
-
-    const [nomeConta, setNomeConta] = useState<string>('')
-    const [tipoConta, setTipoConta] = useState<string>('')
-    const [saldoConta, setSaldoConta] = useState<number>(0)
 
     /**
     * Funções
@@ -76,12 +75,6 @@ export const ContasView = ({navigation}) => {
         </View>
     )
 
-    const headerModalCardAdd = (props:ViewProps) => (
-        <View {...props}>
-            <Text category="h5" style={{textAlign: 'center'}}>Criar Conta</Text>
-        </View>
-    )
-
     return (
         <SafeAreaView style={[styles.container, styles.greenBackground]}>
             <Layout style={styles.container}>
@@ -107,53 +100,10 @@ export const ContasView = ({navigation}) => {
                     <View style={{backgroundColor: '#fff', height: 70, elevation: 10, borderTopStartRadius: 10, borderTopEndRadius: 10, padding: 5, borderWidth: 0.3, borderBottomWidth: 0.1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                         <Button style={{backgroundColor: 'black', borderColor: null, width: 140, height: 50, borderRadius: 10}} onPress={()=>{setModalAddConta(true)}}>Criar Conta</Button>
                     </View>
-                    <Modal backdropStyle={styles.backdrop} visible={modalAddConta} onBackdropPress={()=>setModalAddConta(false)} style={{width: '85%'}}>
-                        <Card header={headerModalCardAdd} style={{width: '100%'}}>
-                            <Text style={styles.label}>Nome da Conta</Text>
-                            <Input placeholder="Ex.: Cartão Banco" value={nomeConta} onChangeText={text => setNomeConta(text)} style={{marginBottom: 10}}/>
-
-                            <Text style={styles.label}>Tipo</Text>
-                            <Input placeholder="Ex.: Corrente" value={tipoConta} onChangeText={text => setTipoConta(text)} style={{marginBottom: 10}}/>
-                            
-
-                            <Text style={styles.label}>Saldo</Text>
-                            {/* <Input placeholder="Ex.: 10000" value={saldoConta.toFixed(2)} onChangeText={(text) => setSaldoConta(parseFloat(text))} keyboardType="numeric"/> */}
-                            <CurrencyInput style={{marginBottom: 10}} value={saldoConta} onChangeValue={setSaldoConta} prefix="R$" delimiter="." separator="," precision={2} minValue={0} placeholder="Ex.: 10.000,00" renderTextInput={textInputProps => <Input {...textInputProps}></Input>}/>
-                            
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                                <Button status="danger" style={{width: '45%'}} onPress={()=>{setModalAddConta(false)}}>Cancelar</Button>
-                                <Button status="success" style={{width: '45%'}}>Cadastrar</Button>
-                            </View>
-                        </Card>
-                    </Modal>
+                    {/* Modal */}
+                    <ModalAddConta open={modalAddConta} setOpen={open => setModalAddConta(open)}/>
                 </Layout>
             </Layout>
         </SafeAreaView>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-    greenBackground: {
-        backgroundColor: '#2f9e41'
-    },
-    scrollViewContainer: {
-        alignItems: 'center', 
-        padding: 20, 
-        gap: 20
-    },
-    label: {
-        marginVertical: 3
-    },
-    datepickerSpacing: {
-        marginBottom: 10
-    },
-    card: {
-        elevation: 8
-    },
-    backdrop: {
-        backgroundColor: 'rgba(0,0,0,0.5)'
-    },
-})

@@ -1,29 +1,31 @@
 import SQLite from "react-native-sqlite-storage"
+import { TipoReceita } from "../model/tipoReceita"
+import { Transacao } from "../model/transacao"
 
 SQLite.enablePromise(true)
 
 export const getDB = async () => {
-    return SQLite.openDatabase({name: "teste", location: "default"})
+    return SQLite.openDatabase({ name: "teste", location: "default" })
 }
 
 const resetDB = async () => {
-    await SQLite.deleteDatabase({name: "teste", location: "default"})
+    await SQLite.deleteDatabase({ name: "teste", location: "default" })
 }
 
-export const getDBGastos = async (): Promise<Gasto[]> => {
-    let gastos: Gasto[] = []
+export const getDBTransacoes = async (): Promise<Transacao[]> => {
+    let transacoes: Transacao[] = []
 
     let teste = await getDB()
 
-    let result: SQLite.ResultSet = (await teste.executeSql("SELECT * FROM teste"))[0]
-    
+    let result: SQLite.ResultSet = (await teste.executeSql("SELECT * FROM Transacoes"))[0]
+
     for (let i = 0; i < result.rows.length; i++) {
         let item = result.rows.item(i)
 
-        gastos.push(item as Gasto)
+        transacoes.push(item as Transacao)
     }
 
-    return gastos
+    return transacoes
 }
 
 
@@ -33,20 +35,20 @@ export const initDB = async () => {
     } catch (error) {
         console.log(error)
     }
-    
+
     let db = await getDB()
 
-    await db.executeSql("CREATE TABLE teste (id INTEGER PRIMARY KEY AUTOINCREMENT, nome VARCHAR(30) NOT NULL, descricao VARCHAR(30), preco REAL NOT NULL, data VARCHAR(30) NOT NULL)")
+    await db.executeSql("CREATE TABLE Transacoes(id INTEGER PRIMARY KEY AUTOINCREMENT, descricao TEXT, valor DECIMAL(10,2), data DATETIME, tipo TEXT, categoriaId INT, contaId INT, FOREIGN KEY (CategoriaID) REFERENCES Categorias(ID), FOREIGN KEY (ContaID) REFERENCES Contas(ID))")
 
-    createGasto({nome: "Coxinha", preco: 20.00, descricao: "comida", data: "12/25/2023"})
-    createGasto({nome: "Pera", preco: 5.00, data: "12/25/2023"})
-    createGasto({nome: "Pastel", preco: 10.00, descricao: "comida", data: "12/25/2023"})
-    createGasto({nome: "Marmita", preco: 50.00, descricao: "comida", data: "12/25/2023"})
-    createGasto({nome: "Carne", preco: 9.00, descricao: "comida", data: "12/25/2023"})
+    createTransacao({ descricao: "Coxinha", valor: 20.00, tipo: TipoReceita.despesa, data: "12/25/2023", categoriaId: 1, contaId: 1 })
+    createTransacao({ descricao: "Pera", valor: 5.00, tipo: TipoReceita.despesa, data: "12/25/2023", categoriaId: 1, contaId: 1 })
+    createTransacao({ descricao: "Pastel", valor: 10.00, tipo: TipoReceita.despesa, data: "12/25/2023", categoriaId: 1, contaId: 1 })
+    createTransacao({ descricao: "Marmita", valor: 50.00, tipo: TipoReceita.despesa, data: "12/25/2023", categoriaId: 1, contaId: 1 })
+    createTransacao({ descricao: "Carne", valor: 9.00, tipo: TipoReceita.despesa, data: "12/25/2023", categoriaId: 1, contaId: 1 })
 }
 
-const createGasto = async (gasto: Gasto) => {
+const createTransacao = async (transacao: Transacao) => {
     let db = await getDB()
 
-    await db.executeSql("INSERT INTO teste(nome, descricao, preco, data) VALUES(?, ?, ?, ?)",[gasto.nome, gasto.descricao, gasto.preco, gasto.data])
+    await db.executeSql("INSERT INTO Transacoes(descricao, valor, data, tipo, categoriaId, contaId) VALUES(?, ?, ?, ?, ?, ?)", [transacao.descricao, transacao.valor, transacao.data, transacao.tipo, transacao.categoriaId, transacao.contaId])
 }

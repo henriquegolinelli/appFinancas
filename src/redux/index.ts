@@ -1,6 +1,5 @@
-import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit"
+import { configureStore } from "@reduxjs/toolkit"
 import { stockReducer } from "./Redux.store"
-import { useDispatch } from "react-redux"
 
 const store = configureStore({
     reducer: {

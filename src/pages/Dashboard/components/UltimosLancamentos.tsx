@@ -1,38 +1,30 @@
-import { View, StyleSheet } from 'react-native'
-import { List, ListItem, Icon, IconElement, IconProps, Text, Divider, Button, Layout } from '@ui-kitten/components'
-import { getTransacoes } from '../../redux/Redux.store'
-import { useDispatch, useSelector } from 'react-redux'
-import { storeStateType } from '../../redux'
-import { useEffect } from 'react'
-import { Transacao } from '../../model/transacao'
+import { Card, Divider, Icon, IconProps, List, ListItem, Text } from "@ui-kitten/components"
+import React from "react"
+import { View, ViewProps } from "react-native"
+import { StyleSheet } from "react-native"
+import { useSelector } from "react-redux"
+import { storeStateType } from "../../../redux"
+import { Transacao } from "../../../model/transacao"
 
-interface CardItemLancamentoProps {
-    nome: string
-    descricao: string
-    data: string
-    preco: number
-}
-
-/*const data = new Array(4).fill({
-    nome: 'Coxinha',
-    data: '10/10/2020',
-    descricao: 'Alimentação',
-    preco: 250
-})*/
-
-export const CardItemLancamento = () => {
+export const UltimosLancamentos = ({ navigation }: any) => {
+    //
     const stock = useSelector((state: storeStateType) => state.stock)
 
     const data: Transacao[] = stock.transacoes
 
-    const renderIconLeft = (props: IconProps): IconElement => (
-        <Icon {...props} name='cube'></Icon>
+    // Header ultimos lançamentos
+    const headerUltimosLancamentos = (props: ViewProps) => (
+        <View {...props}>
+            <Text category='h5' style={{ textAlign: 'center' }}>Últimos Lançamentos</Text>
+        </View>
     )
 
+    //
     const BoxIcon = (props: IconProps): React.ReactElement => (
         <Icon {...props} name='cube' fill='black' style={{ width: 30, height: 30 }}></Icon>
     )
 
+    //
     const renderItem = ({ item, index }: { item: Transacao, index: number }) => (
         <>
             <ListItem>
@@ -50,7 +42,7 @@ export const CardItemLancamento = () => {
 
                     </View>
                     <View>
-                        <Text status='danger' style={styles.itemPrice}>R$ {item.valor.toFixed(2)}</Text>
+                        <Text status='danger' style={styles.itemPrice}>R$ {item.valor.toLocaleString("pt-br", {minimumFractionDigits: 2})}</Text>
                     </View>
                 </View>
             </ListItem>
@@ -59,7 +51,7 @@ export const CardItemLancamento = () => {
 
     )
 
-    return (
+    return <Card header={headerUltimosLancamentos} style={styles.cardContainer}>
         <View>
             <List
                 data={data}
@@ -67,7 +59,7 @@ export const CardItemLancamento = () => {
                 scrollEnabled={false}
             />
         </View>
-    )
+    </Card>
 }
 
 const styles = StyleSheet.create({
@@ -87,5 +79,11 @@ const styles = StyleSheet.create({
     itemPrice: {
         fontSize: 18,
         fontWeight: 'bold'
-    }
+    },
+
+    cardContainer: {
+        width: '100%',
+        borderRadius: 10,
+        elevation: 10,
+    },
 })

@@ -1,9 +1,11 @@
+import { Transacao } from "../model/transacao"
+
 /**
  * StateType
  * 
  * @abstract StateType
  */
-abstract class StateType {
-    gastos: Gasto[]
+export abstract class StateType {
+    transacoes: Transacao[]
     count: number
 }

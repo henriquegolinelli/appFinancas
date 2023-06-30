@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getDBGastos } from "../configs/database";
+import { getDBTransacoes } from "../configs/database";
+import { Transacao } from "../model/transacao";
+import { StateType } from "./Redux.model";
 
 const INIT_STATE: StateType = {
     count: 0,
-    gastos: []
+    transacoes: []
 }
 
 const stock = createSlice({
@@ -18,17 +20,19 @@ const stock = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(getGastos.fulfilled, (state, action) => {
-            state.gastos = action.payload
+        builder.addCase(getTransacoes.fulfilled, (state, action) => {
+            state.transacoes = action.payload
         })
     }
 })
 
-export const getGastos = createAsyncThunk(
+export const getTransacoes = createAsyncThunk(
     "teste/getGastos",
     async (numero: number, thunkAPI) => {
-        const gastos: Gasto[] = await getDBGastos()
-        return gastos
+        console.log("dispatch")
+        const transacoes: Transacao[] = await getDBTransacoes()
+
+        return transacoes
     }
 )
 

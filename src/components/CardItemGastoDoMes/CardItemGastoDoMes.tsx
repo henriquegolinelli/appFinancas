@@ -24,7 +24,7 @@ export const CardItemGastoDoMes = () => {
                     <View style={styles.flexRowView}>
                         <Icon name='smiling-face-outline' style={styles.iconLeft}></Icon>
                         <Text style={{marginLeft: 20}}>{item.title}</Text>
-                        <Text style={{marginLeft: 'auto'}} status='danger'>R$ {item.description.toFixed(2)}</Text>
+                        <Text style={{marginLeft: 'auto'}} status='danger'>R$ {item.description.toLocaleString('pt-br', {minimumFractionDigits: 2})}</Text>
                     </View>
                 </View>
             </ListItem>

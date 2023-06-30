@@ -50,7 +50,7 @@ export const CardItemLancamento = () => {
 
                     </View>
                     <View>
-                        <Text status='danger' style={styles.itemPrice}>R$ {item.valor.toFixed(2)}</Text>
+                        <Text status='danger' style={styles.itemPrice}>R$ {item.preco.toLocaleString('pt-br', {minimumFractionDigits: 2})}</Text>
                     </View>
                 </View>
             </ListItem>

@@ -109,8 +109,8 @@ export const DashboardView = ({ navigation }: any) => {
     // Header Card Saldo Total
     const headerSaldoTotal = (props: ViewProps) => (
         <View {...props}>
-            <Text category='h5' style={{ textAlign: 'center' }}>Saldo Total</Text>
-            <Text category='h5' style={{ textAlign: 'center', fontWeight: 'normal', color: '#555', marginTop: 10 }}>R$ 50.000,00</Text>
+            <Text category='h5' style={{textAlign: 'center'}}>Saldo Total</Text>
+            <Text category='h5' style={{textAlign: 'center', fontWeight: 'normal', color: '#555', marginTop: 10}}>R$ {(50000).toLocaleString('pt-br', {minimumFractionDigits: 2})}</Text>
         </View>
     )
 
@@ -161,24 +161,24 @@ export const DashboardView = ({ navigation }: any) => {
                         {/* Saldo Total */}
                         <Card header={headerSaldoTotal} style={styles.cardContainer} footer={footerSaldoTotal}>
                             <Layout>
-                                <Text style={{ textAlign: 'center', color: '#777' }}>Principal (corrente): R$ 50.000,00</Text>
+                                <Text style={{textAlign: 'center', color: '#777'}}>Principal (corrente): R$ {(50000).toLocaleString('pt-br', {minimumFractionDigits: 2})}</Text>
                             </Layout>
-                            <Layout style={{ display: details ? 'flex' : 'none' }}>
-                                <Divider style={{ marginTop: 15 }} />
-                                <Layout style={{ marginTop: 10 }}>
-                                    <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: '#555' }}>RESUMO DO MÊS</Text>
-                                    <Layout style={{ marginTop: 15, gap: 5 }}>
-                                        <Layout style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#555' }}>Receita Mensal:</Text>
-                                            <Text status='success'>R$ 51.000,00</Text>
+                            <Layout style={{display: details?'flex':'none'}}>
+                                <Divider style={{marginTop: 15}}/>
+                                <Layout style={{marginTop: 10}}>
+                                    <Text style={{fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: '#555'}}>RESUMO DO MÊS</Text>
+                                    <Layout style={{marginTop: 15, gap: 5}}>
+                                        <Layout style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <Text style={{fontWeight: 'bold', fontSize: 16, color: '#555'}}>Receita Mensal:</Text>
+                                            <Text status='success'>R$ {(51000).toLocaleString('pt-br', {minimumFractionDigits: 2})}</Text>
                                         </Layout>
-                                        <Layout style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#555' }}>Despesa Mensal:</Text>
-                                            <Text status='danger'>R$ 768,01</Text>
+                                        <Layout style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <Text style={{fontWeight: 'bold', fontSize: 16, color: '#555'}}>Despesa Mensal:</Text>
+                                            <Text status='danger'>R$ {(768).toLocaleString('pt-br', {minimumFractionDigits: 2})}</Text>
                                         </Layout>
-                                        <Layout style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#555' }}>Saldo Mensal:</Text>
-                                            <Text style={{ color: '#555' }}>R$ 51.000,00</Text>
+                                        <Layout style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <Text style={{fontWeight: 'bold', fontSize: 16, color: '#555'}}>Saldo Mensal:</Text>
+                                            <Text style={{color: '#555'}}>R$ {(51000).toLocaleString('pt-br', {minimumFractionDigits: 2})}</Text>
                                         </Layout>
                                     </Layout>
                                 </Layout>

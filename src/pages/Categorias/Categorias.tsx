@@ -43,7 +43,7 @@ export const Categorias = ({navigation}) => {
 
     const [modalAddCategoria, setModalAddCategoria] = useState<boolean>(false)
 
-    const [inputAlimentacao, setInputAlimentacao] = useState<string>('')
+    const [inputNomeCategoria, setInputNomeCategoria] = useState<string>('')
     const [selectIndexTipo, setSelectIndexTipo] = useState<IndexPath>(new IndexPath(0))
 
     /**
@@ -96,14 +96,14 @@ export const Categorias = ({navigation}) => {
                 <Layout style={styles.container}>
                     <ViewPager selectedIndex={indexPage} onSelect={index => setIndexPage(index)} style={styles.container} >
                         <ScrollView contentContainerStyle={styles.scrollViewContainer} horizontal={false}>
-                            <Card header={headerCardDespesas} style={{width: '100%', elevation: 10}}>
+                            <Card header={headerCardDespesas} style={[{width: '100%', elevation: 10}]}>
                                 <List renderItem={renderItemLista} data={dataDespesas} scrollEnabled={false}>
 
                                 </List>
                             </Card>
                         </ScrollView>
                         <ScrollView contentContainerStyle={styles.scrollViewContainer} horizontal={false}>
-                            <Card header={headerCardReceitas} style={{width: '100%', elevation: 10}}>
+                            <Card header={headerCardReceitas} style={[{width: '100%', elevation: 10}]}>
                                 <List renderItem={renderItemLista} data={dataReceitas} scrollEnabled={false}>
 
                                 </List>
@@ -124,8 +124,8 @@ export const Categorias = ({navigation}) => {
                     </View>
                     <Modal visible={modalAddCategoria} backdropStyle={styles.backdrop} onBackdropPress={()=>setModalAddCategoria(false)} style={{width: '85%'}}>
                         <Card header={headerModalCardAdd}>
-                            <Text style={[styles.label]}>Lol</Text>
-                            <Input placeholder="Ex.: Alimentação" style={{marginBottom: 10}}></Input>
+                            <Text style={[styles.label]}>Nome da Categoria</Text>
+                            <Input placeholder="Ex.: Alimentação" style={{marginBottom: 10}} value={inputNomeCategoria} onChangeText={setInputNomeCategoria}></Input>
 
                             <Text style={styles.label}>Tipo</Text>
                             <Select selectedIndex={selectIndexTipo} onSelect={(index:IndexPath) => setSelectIndexTipo(index)} value={displayValueTipo} style={{marginBottom: 10}}>

@@ -63,6 +63,9 @@ export const ModalDespesa = (props: PropsModal) => {
     const handleAdicionar = async () => {
         //
         let valor: number = Number(inputValorDespesa)
+
+        valor = -valor
+
         let obs: string = inputObsDespesa
 
         if (valor == 0) return

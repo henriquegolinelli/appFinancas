@@ -6,6 +6,12 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { ModalAddConta } from "./components/ModalAddConta"
 
 import { Styles as styles } from "../../common/style/stylesheet"
+import { storeStateType } from "../../redux"
+import { useDispatch, useSelector } from "react-redux"
+import { Transacao } from "../../model/transacao"
+import { Conta } from "../../model/conta"
+import { getContas } from "../../redux/Redux.store"
+import { TipoReceita } from "../../model/tipoReceita"
 
 interface ListItemProps {
     nome: string
@@ -32,6 +38,34 @@ const dataContas = new Array(2).fill({
 
 
 export const ContasView = ({navigation}) => {
+    //
+    const stock = useSelector((state: storeStateType) => state.stock)
+
+    let transacoes: Transacao[] = stock.transacoes
+
+    let contas: Conta[] = stock.contas
+
+    let contaTransacoes: Transacao[][] = []
+
+    for (let i: number = 0; i < contas.length; i++) {
+        let contaTransacao: Transacao[] = []
+        let conta: Conta = contas[i]
+
+        contaTransacao = transacoes.filter(transacao => transacao.contaId == conta.id)
+
+        if (contaTransacao.length == 0) {
+            contaTransacao = [{valor: 0, descricao: "", data: "", contaId: conta.id, tipo: TipoReceita.despesa, categoriaId: 0}]
+        }
+
+        contaTransacoes.push(contaTransacao)
+    }
+    
+    //
+    const dispatch = useDispatch<any>()
+
+    const updateContas = () => {
+        dispatch(getContas())
+    }
 
     /**
      * States da página e formulário
@@ -41,7 +75,6 @@ export const ContasView = ({navigation}) => {
     /**
     * Funções
     */
-
 
     /**
      * Renders
@@ -53,18 +86,26 @@ export const ContasView = ({navigation}) => {
         <TopNavigationAction icon={BackIcon} onPress={()=>{navigation.goBack()}}/>
     )
 
-    const renderListItem = ({item, index}: {item:ListItemProps, index:number}) => (
-        <>
+    const renderListItem = ({item, index}: {item:Transacao[], index:number}) => {
+        let valor: number = 0
+        let conta: string = contas.find(conta => conta.id == item[0]?.contaId)?.nome ?? ""
+        let tipo: string = contas.find(conta => conta.id == item[0]?.contaId)?.tipo ?? ""
+
+        item.forEach((transacao) => {
+            valor += transacao.valor
+        })
+        
+        return <>
             <ListItem style={{width: '100%'}}>
                 <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <Text style={{textAlign: 'left', fontSize: 14}}>{item.nome}</Text>
-                    <Text style={{textAlign: 'center', fontSize: 14}}>{item.tipo}</Text>
-                    <Text style={{textAlign: 'right', fontSize: 14}}>R$ {item.saldo.toLocaleString('pt-br', {minimumFractionDigits: 2})}</Text>
+                    <Text style={{textAlign: 'left', fontSize: 14}}>{conta}</Text>
+                    <Text style={{textAlign: 'center', fontSize: 14}}>{tipo}</Text>
+                    <Text style={{textAlign: 'right', fontSize: 14}}>R$ {valor.toLocaleString('pt-br', {minimumFractionDigits: 2})}</Text>
                 </View>
             </ListItem>
             <Divider></Divider>
         </>
-    )
+    }
 
     /**
      * Card header / footer
@@ -91,7 +132,7 @@ export const ContasView = ({navigation}) => {
 
                                 </View>
                                 <Divider style={{marginVertical: 5, borderWidth: 1}}/>
-                                <List scrollEnabled={false} renderItem={renderListItem} data={dataContas}>
+                                <List scrollEnabled={false} renderItem={renderListItem} data={contaTransacoes}>
 
                                 </List>
                             </Card>
@@ -101,7 +142,7 @@ export const ContasView = ({navigation}) => {
                         <Button style={{backgroundColor: 'black', borderColor: null, width: 140, height: 50, borderRadius: 10}} onPress={()=>{setModalAddConta(true)}}>Criar Conta</Button>
                     </View>
                     {/* Modal */}
-                    <ModalAddConta open={modalAddConta} setOpen={open => setModalAddConta(open)}/>
+                    <ModalAddConta open={modalAddConta} setOpen={open => setModalAddConta(open)} update={() => {updateContas()}}/>
                 </Layout>
             </Layout>
         </SafeAreaView>

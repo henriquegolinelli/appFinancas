@@ -5,6 +5,8 @@ import CurrencyInput from "react-native-currency-input"
 import { Styles as styles } from "../../../common/style/stylesheet"
 import { ModalAddContaProps } from "../model"
 import { useState } from "react"
+import { createConta } from "../../../configs/database"
+import { Conta } from "../../../model/conta"
 
 export const ModalAddConta = (props:ModalAddContaProps) => {
 
@@ -23,6 +25,24 @@ export const ModalAddConta = (props:ModalAddContaProps) => {
         </View>
     )
 
+    const handleAdd = async () => {
+        let nome: string = nomeConta
+        let tipo: string = tipoConta
+        let saldo: number = saldoConta
+
+        if (nome == "") return
+        if (tipo == "") return
+
+        let conta: Conta = {nome: nome, tipo: tipo}
+
+        await createConta(conta)
+        props.update()
+
+        setNomeConta("")
+        setTipoConta("")
+        setSaldoConta(0)
+    }
+
     return <Modal backdropStyle={styles.backdrop} visible={isActive} onBackdropPress={()=>setModal(false)} style={{width: '85%'}}>
     <Card header={headerModalCardAdd} style={{width: '100%'}}>
         <Text style={styles.label}>Nome da Conta</Text>
@@ -38,7 +58,7 @@ export const ModalAddConta = (props:ModalAddContaProps) => {
         
         <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
             <Button status="danger" style={{width: '45%'}} onPress={()=>{setModal(false)}}>Cancelar</Button>
-            <Button status="success" style={{width: '45%'}}>Cadastrar</Button>
+            <Button status="success" style={{width: '45%'}} onPress={async () => {await handleAdd()}}>Cadastrar</Button>
         </View>
     </Card>
 </Modal>

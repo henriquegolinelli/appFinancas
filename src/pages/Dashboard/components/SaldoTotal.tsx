@@ -32,7 +32,7 @@ export const SaldoTotal = () => {
         receita += transacao.valor
     }
 
-    const saldo: number = receita - despesa
+    const saldo: number = receita + despesa
     const saldoString: string = saldo.toLocaleString('pt-br', { minimumFractionDigits: 2 })
     const receitaString: string = receita.toLocaleString('pt-br', { minimumFractionDigits: 2 })
     const despesaString: string = despesa.toLocaleString('pt-br', { minimumFractionDigits: 2 })

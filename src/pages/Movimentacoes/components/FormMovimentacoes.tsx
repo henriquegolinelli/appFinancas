@@ -7,27 +7,32 @@ import {
   Text,
 } from "@ui-kitten/components";
 import { Styles as styles } from "../../../common/style/stylesheet";
-import { useState } from "react";
+import { FormSetContaProps } from "../model";
+import { useSelector } from "react-redux";
+import { storeStateType } from "../../../redux";
+import { Conta } from "../../../model/conta";
 
 // Dados que irão aparecer como opções no SELECT
+// TODO: Pegar as contas do banco de dados
 const dataSelectContas = ["Principal (Corrente)", "Secundária (Poupança)"];
 
-export const FormMovimentacoes = () => {
-  /**
-   * States do formulário
-   */
-  const [selectConta, setSelectConta] = useState<IndexPath>(new IndexPath(0));
+export const FormMovimentacoes = (props:FormSetContaProps) => {
+
+  const stock = useSelector((state: storeStateType) => state.stock);
+  let contas: Conta[] = stock.contas;
+
+  
 
   /**
    * Funções
    */
-  const displayValueContas = dataSelectContas[selectConta.row];
+  const displayValueContas = contas[props.conta.row];
 
   /**
    * Renders
    */
-  const renderSelectOptionsContas = (title) => (
-    <SelectItem title={title} key={title} />
+  const renderSelectOptionsContas = (conta: Conta) => (
+    <SelectItem title={conta.nome + " (" + conta.tipo + ")"} key={conta.id} />
   );
 
   return (
@@ -36,14 +41,13 @@ export const FormMovimentacoes = () => {
     >
       <Text style={styles.label}>Conta</Text>
       <Select
-        selectedIndex={selectConta}
-        onSelect={(index: IndexPath) => setSelectConta(index)}
-        value={displayValueContas}
+        selectedIndex={props.conta}
+        onSelect={(index: IndexPath) => props.setConta(index)}
+        value={displayValueContas.nome + " (" + displayValueContas.tipo + ")"}
       >
-        {dataSelectContas.map(renderSelectOptionsContas)}
+        {contas.map(renderSelectOptionsContas)}
       </Select>
-
-      <Button style={{ marginTop: 10 }}>Consultar</Button>
+      <Button style={{ marginTop: 10}} onPress={props.buttonPress}>Consultar</Button>
     </Layout>
   );
 };

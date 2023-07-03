@@ -4,13 +4,14 @@ import { Icon, IconElement, IconProps, Layout, TopNavigation, TopNavigationActio
 import { SaldoTotal } from "./components/SaldoTotal"
 import { useEffect, useState } from "react"
 import { initDB } from "../../configs/database"
-import { getTransacoes } from "../../redux/Redux.store"
+import { addTransacao, getCategorias, getContas, getTransacoes } from "../../redux/Redux.store"
 import { useDispatch } from "react-redux"
 import { UltimosLancamentos } from "./components/UltimosLancamentos"
 import { GastoMes } from "./components/GastoMes"
 import { ModalDespesa } from "./components/ModalDespesas"
 import { ModalTranferencia } from "./components/ModalTransferencia"
 import { ModalReceita } from "./components/ModalReceita"
+import { Transacao } from "../../model/transacao"
 
 export const DashBoard = ({ navigation }: any) => {
     /**
@@ -27,7 +28,17 @@ export const DashBoard = ({ navigation }: any) => {
     const init = async () => {
         await initDB()
 
-        dispatch(getTransacoes(1))
+        updateRedux()
+    }
+
+    const updateRedux = () => {
+        dispatch(getTransacoes())
+        dispatch(getCategorias())
+        dispatch(getContas())
+    }
+
+    const updateTransacao = (transacao: Transacao) => {
+        dispatch(addTransacao(transacao))
     }
 
     /**
@@ -65,8 +76,8 @@ export const DashBoard = ({ navigation }: any) => {
                 </Layout>
             </View>
         </Layout>
-        <ModalDespesa isModal={visibleModalAddDespesa} setModal={(isVisible) => { setVisibleModalAddDespesa(isVisible) }} />
-        <ModalTranferencia isModal={visibleModalAddTransferencia} setModal={(isVisible) => { setVisibleModalAddTransferencia(isVisible) }} />
-        <ModalReceita isModal={visibleModalAddReceita} setModal={(isVisible) => { setVisibleModalAddReceita(isVisible) }} />
+        <ModalDespesa isModal={visibleModalAddDespesa} setModal={(isVisible) => { setVisibleModalAddDespesa(isVisible)}} update={(payload) => {updateTransacao(payload)}}/>
+        <ModalTranferencia isModal={visibleModalAddTransferencia} setModal={(isVisible) => { setVisibleModalAddTransferencia(isVisible)}} update={() => {updateRedux()}}/>
+        <ModalReceita isModal={visibleModalAddReceita} setModal={(isVisible) => { setVisibleModalAddReceita(isVisible) }} update={() => {updateRedux()}}/>
     </SafeAreaView>
 }

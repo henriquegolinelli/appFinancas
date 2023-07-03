@@ -1,6 +1,7 @@
 import SQLite from "react-native-sqlite-storage"
 import { TipoReceita } from "../model/tipoReceita"
 import { Transacao } from "../model/transacao"
+import { Conta } from "../model/conta"
 
 SQLite.enablePromise(true)
 
@@ -15,9 +16,9 @@ const resetDB = async () => {
 export const getDBTransacoes = async (): Promise<Transacao[]> => {
     let transacoes: Transacao[] = []
 
-    let teste = await getDB()
+    let db = await getDB()
 
-    let result: SQLite.ResultSet = (await teste.executeSql("SELECT * FROM Transacoes"))[0]
+    let result: SQLite.ResultSet = (await db.executeSql("SELECT * FROM Transacoes"))[0]
 
     for (let i = 0; i < result.rows.length; i++) {
         let item = result.rows.item(i)
@@ -26,6 +27,38 @@ export const getDBTransacoes = async (): Promise<Transacao[]> => {
     }
 
     return transacoes
+}
+
+export const getDBCategorias = async (): Promise<Categoria[]> => {
+    let categorias: Categoria[] = []
+
+    let db = await getDB()
+
+    let result: SQLite.ResultSet = (await db.executeSql("SELECT * FROM Categorias"))[0]
+
+    for (let i = 0; i < result.rows.length; i++) {
+        let item = result.rows.item(i)
+
+        categorias.push(item as Categoria)
+    }
+
+    return categorias
+}
+
+export const getDBContas = async (): Promise<Conta[]> => {
+    let conta: Conta[] = []
+
+    let db = await getDB()
+
+    let result: SQLite.ResultSet = (await db.executeSql("SELECT * FROM Contas"))[0]
+
+    for (let i = 0; i < result.rows.length; i++) {
+        let item = result.rows.item(i)
+
+        conta.push(item as Conta)
+    }
+
+    return conta
 }
 
 
@@ -38,17 +71,39 @@ export const initDB = async () => {
 
     let db = await getDB()
 
+    // Transacoes
     await db.executeSql("CREATE TABLE Transacoes(id INTEGER PRIMARY KEY AUTOINCREMENT, descricao TEXT, valor DECIMAL(10,2), data DATETIME, tipo TEXT, categoriaId INT, contaId INT, FOREIGN KEY (CategoriaID) REFERENCES Categorias(ID), FOREIGN KEY (ContaID) REFERENCES Contas(ID))")
 
-    createTransacao({ descricao: "Coxinha", valor: 20.00, tipo: TipoReceita.despesa, data: "12/25/2023", categoriaId: 1, contaId: 1 })
-    createTransacao({ descricao: "Pera", valor: 5.00, tipo: TipoReceita.despesa, data: "12/25/2023", categoriaId: 1, contaId: 1 })
-    createTransacao({ descricao: "Pastel", valor: 10.00, tipo: TipoReceita.despesa, data: "12/25/2023", categoriaId: 1, contaId: 1 })
-    createTransacao({ descricao: "Marmita", valor: 50.00, tipo: TipoReceita.despesa, data: "12/25/2023", categoriaId: 1, contaId: 1 })
-    createTransacao({ descricao: "Carne", valor: 9.00, tipo: TipoReceita.despesa, data: "12/25/2023", categoriaId: 1, contaId: 1 })
+    await createTransacao({ descricao: "Coxinha", valor: 20.00, tipo: TipoReceita.despesa, data: "01/06/2023", categoriaId: 1, contaId: 1 })
+    await createTransacao({ descricao: "Pera", valor: 5.00, tipo: TipoReceita.despesa, data: "03/06/2023", categoriaId: 1, contaId: 1 })
+
+    // Categorias
+    await db.executeSql("CREATE TABLE Categorias(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, cor TEXT)")
+
+    await createCategoria({nome: "Alimento", cor: "VERMELHOR"})
+    await createCategoria({nome: "Higiene", cor: "PRETO"})
+
+    // Contas
+    await db.executeSql("CREATE TABLE Contas(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, tipo TEXT)")
+
+    await createConta({nome: "PRINCIPAL", tipo: "CORRENTE"})
+    await createConta({nome: "POUPANCA", tipo: "POUPANÇA"})
 }
 
-const createTransacao = async (transacao: Transacao) => {
+export const createTransacao = async (transacao: Transacao) => {
     let db = await getDB()
 
     await db.executeSql("INSERT INTO Transacoes(descricao, valor, data, tipo, categoriaId, contaId) VALUES(?, ?, ?, ?, ?, ?)", [transacao.descricao, transacao.valor, transacao.data, transacao.tipo, transacao.categoriaId, transacao.contaId])
+}
+
+export const createCategoria = async (categoria: Categoria) => {
+    let db = await getDB()
+
+    await db.executeSql("INSERT INTO Categorias(nome, cor) VALUES(?, ?)", [categoria.nome, categoria.cor])
+}
+
+export const createConta = async (conta: Conta) => {
+    let db = await getDB()
+
+    await db.executeSql("INSERT INTO Contas(nome, tipo) VALUES(?, ?)", [conta.nome, conta.tipo])
 }

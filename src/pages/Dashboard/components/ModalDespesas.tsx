@@ -3,27 +3,22 @@ import { useState } from "react";
 import { View, ViewProps } from "react-native"
 import { StyleSheet } from "react-native"
 import { PropsModal } from "../model";
-
-/**
- * Categorias
- */
-const dataSelectCategoria = [
-    'Alimentação',
-    'Cuidados Pessoais',
-    'Transporte',
-    'Viagem',
-    'Lazer'
-]
-
-/**
- * Contas
- */
-const dataSelectContas = [
-    'Principal (Corrente)',
-    'Secundária (Poupança)'
-]
+import { useDispatch, useSelector } from "react-redux";
+import { storeStateType } from "../../../redux";
+import { Transacao } from "../../../model/transacao";
+import { TipoReceita } from "../../../model/tipoReceita";
+import { createTransacao } from "../../../configs/database";
+import { getCategorias, getTransacoes } from "../../../redux/Redux.store";
+import { Conta } from "../../../model/conta";
 
 export const ModalDespesa = (props: PropsModal) => {
+    //
+    const stock = useSelector((state: storeStateType) => state.stock)
+
+    //
+    const categorias: Categoria[] = stock.categorias
+    const contas: Conta[] = stock.contas
+
     // Props
     const isActive: boolean = props.isModal
     const setModal = (isActive: boolean) => {
@@ -47,49 +42,84 @@ export const ModalDespesa = (props: PropsModal) => {
     const [inputObsDespesa, setInputObsDespesa] = useState<string>("")
 
     //
-    const displayValueCategorias = dataSelectCategoria[selectCategoriaDespesa.row];
-    const displayValueContas = dataSelectContas[selectContaDespesa.row];
+    const categoriaSelecionada = categorias[selectCategoriaDespesa.row] ?? { id: 0, nome: "", cor: "" };
+    const contaSelecionada = contas[selectContaDespesa.row] ?? {id: 0, nome: "", tipo: ""};
 
     // Select Options Categorias
-    const renderOptionsCategorias = (title) => (
-        <SelectItem title={title} key={title} />
+    const renderOptionsCategorias = (categoria: Categoria) => (
+        <SelectItem title={categoria.nome} key={categoria.id} />
     )
 
     // Select Options Contas
-    const renderOptionsContas = (title) => (
-        <SelectItem title={title} key={title} />
+    const renderOptionsContas = (contas: Conta) => (
+        <SelectItem title={contaSelecionada.nome + " (" + contaSelecionada.tipo + ")"} key={contas.id} />
     )
 
+    //
+    const handleAdicionar = async () => {
+        //
+        let valor: number = Number(inputValorDespesa)
+        let obs: string = inputObsDespesa
+
+        if (valor == 0) return
+        if (obs == "") return
+
+        //
+        let data: any = dateDespesa
+
+        let dia: number = data.getDate()
+        let mes: number = data.getMonth() + 1
+        let ano: number = data.getFullYear()
+
+        data = ("0" + dia).slice(-2) + "/" + ("0" + mes).slice(-2) + "/" + ano
+
+        //
+        let transacao: Transacao = {
+            descricao: obs,
+            valor: valor,
+            data: data,
+            categoriaId: categoriaSelecionada.id,
+            contaId: contaSelecionada.id,
+            tipo: TipoReceita.despesa
+        }
+
+        await createTransacao(transacao)
+        props.update(transacao)
+
+        setInputObsDespesa("")
+        setInputValorDespesa("")
+    }
+
     return <Modal visible={isActive} backdropStyle={styles.backdrop} onBackdropPress={() => setModal(false)} style={{ width: '85%' }}>
-    <Card header={headerCardModalAddDespesa}>
-        <Text>Data</Text>
-        <Datepicker date={dateDespesa} onSelect={nextDate => setDateDespesa(nextDate)}></Datepicker>
+        <Card header={headerCardModalAddDespesa}>
+            <Text>Data</Text>
+            <Datepicker date={dateDespesa} onSelect={nextDate => setDateDespesa(nextDate)}></Datepicker>
 
-        <Text style={styles.labelForm}>Valor (R$)</Text>
-        <Input placeholder='Ex.: 450.95' value={inputValorDespesa} onChangeText={text => setInputValorDespesa(text)} keyboardType='numeric'></Input>
+            <Text style={styles.labelForm}>Valor (R$)</Text>
+            <Input placeholder='Ex.: 450.95' value={inputValorDespesa} onChangeText={text => setInputValorDespesa(text)} keyboardType='numeric'></Input>
 
-        <Text style={styles.labelForm}>Categoria</Text>
-        <Select selectedIndex={selectCategoriaDespesa} onSelect={(index: IndexPath) => setSelectCategoriaDespesa(index)} value={displayValueCategorias}>
-            {dataSelectCategoria.map(renderOptionsCategorias)}
-        </Select>
+            <Text style={styles.labelForm}>Categoria</Text>
+            <Select selectedIndex={selectCategoriaDespesa} onSelect={(index: IndexPath) => setSelectCategoriaDespesa(index)} value={categoriaSelecionada.nome}>
+                {categorias.map(renderOptionsCategorias)}
+            </Select>
 
-        <Text style={styles.labelForm}>Conta</Text>
-        <Select selectedIndex={selectContaDespesa} onSelect={(index: IndexPath) => setSelectContaDespesa(index)} value={displayValueContas}>
-            {dataSelectContas.map(renderOptionsContas)}
-        </Select>
+            <Text style={styles.labelForm}>Conta</Text>
+            <Select selectedIndex={selectContaDespesa} onSelect={(index: IndexPath) => setSelectContaDespesa(index)} value={contaSelecionada.nome + " (" + contaSelecionada.tipo + ")"}>
+                {contas.map(renderOptionsContas)}
+            </Select>
 
-        <Text style={styles.labelForm}>Observação</Text>
-        <Input placeholder='Ex: Pastel' value={inputObsDespesa} onChangeText={text => setInputObsDespesa(text)}></Input>
+            <Text style={styles.labelForm}>Observação</Text>
+            <Input placeholder='Ex: Pastel' value={inputObsDespesa} onChangeText={text => setInputObsDespesa(text)}></Input>
 
-        <Divider style={styles.divider} />
+            <Divider style={styles.divider} />
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Button status='danger' onPress={() => setModal(false)}>CANCELAR</Button>
-            <Button status='success' onPress={() => console.log('Adicionar Pressionado!!')}>ADICIONAR</Button>
-        </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Button status='danger' onPress={() => setModal(false)}>CANCELAR</Button>
+                <Button status='success' onPress={async () => {await handleAdicionar() }}>ADICIONAR</Button>
+            </View>
 
-    </Card>
-</Modal>
+        </Card>
+    </Modal>
 }
 
 const styles = StyleSheet.create({

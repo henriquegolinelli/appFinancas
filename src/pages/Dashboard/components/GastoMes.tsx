@@ -1,18 +1,64 @@
 import { Card, Divider, Icon, IconElement, IconProps, List, ListItem, Text } from "@ui-kitten/components"
 import { View, ViewProps } from "react-native"
 import { StyleSheet } from "react-native"
+import { useSelector } from "react-redux"
+import { storeStateType } from "../../../redux"
+import { Transacao } from "../../../model/transacao"
+import { TipoReceita } from "../../../model/tipoReceita"
 
 interface CardItemGastoDoMesProps {
-    title: string
-    description: number
+    categoria: number
+    valor: number
 }
 
-const data = new Array(4).fill({
-    title: 'Alimentação',
-    description: 500
-})
-
 export const GastoMes = () => {
+    //
+    const stock = useSelector((state: storeStateType) => state.stock)
+
+    //
+    const transacoes: Transacao[] = stock.transacoes
+
+    //
+    let gastos: Transacao[] = [];
+
+    for (let i: number = 0; i < transacoes.length; i++) {
+        let transacao = transacoes[i]
+
+        if (transacao.tipo == TipoReceita.receita) continue
+
+        let data: string[] = transacao.data.split("/")
+
+        let atualMes: string = (new Date().getMonth() + 1).toString()
+
+        atualMes = ("0" + atualMes).slice(-2)
+
+        if (data[1] != atualMes) continue
+
+        gastos.push(transacao)
+    }
+
+    //
+    let cardItemGastoDoMesProps: CardItemGastoDoMesProps[] = []
+
+    for (let i: number = 0; i < gastos.length; i++) {
+        let id = gastos[i].categoriaId
+        let valor = gastos[i].valor
+
+        let result = cardItemGastoDoMesProps.find(value => value.categoria == id)
+
+        if (result == null) {
+            cardItemGastoDoMesProps.push({ categoria: id, valor: valor })
+
+            continue
+        }
+
+        let index = cardItemGastoDoMesProps.indexOf(result)
+
+        result.valor += valor
+
+        cardItemGastoDoMesProps[index] = result
+    }
+
     // header Gastos do mes
     const headerGastosDoMes = (props: ViewProps) => (
         <View {...props}>
@@ -25,26 +71,28 @@ export const GastoMes = () => {
         <Icon {...props} name='cube'></Icon>
     )
 
-    const renderItem = ({ item, index }: { item: CardItemGastoDoMesProps; index: number }) => (
-        <>
+    const renderItem = ({ item, index }: { item: CardItemGastoDoMesProps; index: number }) => {
+        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoria) ?? { nome: "", cor: "" }
+
+        return <>
             <ListItem>
                 <View style={styles.container}>
                     <View style={styles.flexRowView}>
                         <Icon name='smiling-face-outline' style={styles.iconLeft}></Icon>
-                        <Text style={{ marginLeft: 20 }}>{item.title}</Text>
-                        <Text style={{ marginLeft: 'auto' }} status='danger'>R$ {item.description.toFixed(2)}</Text>
+                        <Text style={{ marginLeft: 20 }}>{categoria.nome}</Text>
+                        <Text style={{ marginLeft: 'auto' }} status='danger'>R$ {item.valor.toFixed(2)}</Text>
                     </View>
                 </View>
             </ListItem>
             <Divider></Divider>
         </>
 
-    )
+    }
 
     return <Card header={headerGastosDoMes} style={styles.cardContainer}>
         <View>
             <List
-                data={data}
+                data={cardItemGastoDoMesProps}
                 renderItem={renderItem}
                 scrollEnabled={false}
             />

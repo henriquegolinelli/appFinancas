@@ -1,3 +1,4 @@
+import { Conta } from "../model/conta"
 import { Transacao } from "../model/transacao"
 
 /**
@@ -7,5 +8,7 @@ import { Transacao } from "../model/transacao"
  */
 export abstract class StateType {
     transacoes: Transacao[]
+    categorias: Categoria[]
     count: number
+    contas: Conta[]
 }

@@ -6,11 +6,11 @@ import { useSelector } from "react-redux"
 import { storeStateType } from "../../../redux"
 import { Transacao } from "../../../model/transacao"
 
-export const UltimosLancamentos = ({ navigation }: any) => {
+export const UltimosLancamentos = () => {
     //
     const stock = useSelector((state: storeStateType) => state.stock)
 
-    const data: Transacao[] = stock.transacoes
+    const transacoes: Transacao[] = stock.transacoes
 
     // Header ultimos lançamentos
     const headerUltimosLancamentos = (props: ViewProps) => (
@@ -25,8 +25,10 @@ export const UltimosLancamentos = ({ navigation }: any) => {
     )
 
     //
-    const renderItem = ({ item, index }: { item: Transacao, index: number }) => (
-        <>
+    const renderItem = ({ item, index }: { item: Transacao, index: number }) => {
+        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoriaId) ?? {nome: "", cor: ""}
+
+        return <>
             <ListItem>
                 <View style={styles.listItemContainer}>
                     <View style={{ gap: 5 }}>
@@ -37,24 +39,24 @@ export const UltimosLancamentos = ({ navigation }: any) => {
                         </View>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                             <BoxIcon></BoxIcon>
-                            <Text> {item.descricao}</Text>
+                            <Text> {categoria.nome}</Text>
                         </View>
 
                     </View>
                     <View>
-                        <Text status='danger' style={styles.itemPrice}>R$ {item.valor.toLocaleString("pt-br", {minimumFractionDigits: 2})}</Text>
+                        <Text status='danger' style={styles.itemPrice}>R$ {item.valor.toLocaleString("pt-br", { minimumFractionDigits: 2 })}</Text>
                     </View>
                 </View>
             </ListItem>
             <Divider></Divider>
         </>
 
-    )
+    }
 
     return <Card header={headerUltimosLancamentos} style={styles.cardContainer}>
         <View>
             <List
-                data={data}
+                data={transacoes}
                 renderItem={renderItem}
                 scrollEnabled={false}
             />

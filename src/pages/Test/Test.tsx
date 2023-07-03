@@ -26,7 +26,7 @@ export const TestView = ({ navigation }: any) => {
     const init = async () => {
         await initDB()
 
-        dispatch(getTransacoes(1))
+        dispatch(getTransacoes())
     }
 
     const renderMenuIcon = () => (
@@ -48,7 +48,7 @@ export const TestView = ({ navigation }: any) => {
 
                 <Button status='success' onPress={() => { dispatch(increment()) }}>+</Button>
                 <Button status='danger' onPress={() => { dispatch(decrement()) }}>-</Button>
-                <Button status='danger' onPress={() => { dispatch(getTransacoes(12)) }}>-</Button>
+                <Button status='danger' onPress={() => { dispatch(getTransacoes()) }}>-</Button>
             </View>
         </SafeAreaView>
     )

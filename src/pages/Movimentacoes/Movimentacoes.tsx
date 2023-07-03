@@ -6,6 +6,9 @@ import { Tabela } from "../../components/Tabela/Tabela"
 
 import { Styles as styles } from "../../common/style/stylesheet"
 import { FormMovimentacoes } from "./components/FormMovimentacoes"
+import { useSelector } from "react-redux"
+import { storeStateType } from "../../redux"
+import { Transacao } from "../../model/transacao"
 
 const MenuIcon = (props:IconProps): IconElement => (
     <Icon {...props} name='menu' />
@@ -15,13 +18,17 @@ const BackIcon = (props:IconProps): IconElement => (
     <Icon {...props} name="arrow-back"/>
 )
 
-const data = [
-    {data: '03/12/2022', categoria: 'Alimentação', valor: 150.99, tipo: 'D'},
-    {data: '04/12/2022', categoria: 'Cuidados Pessoais', valor: 160.99, tipo: 'D'},
-    {data: '05/12/2022', categoria: 'Empréstimo', valor: 600.00, tipo: 'R'},
-]
+// const data = [
+//     {data: '03/12/2022', categoria: 'Alimentação', valor: 150.99, tipo: 'D'},
+//     {data: '04/12/2022', categoria: 'Cuidados Pessoais', valor: 160.99, tipo: 'D'},
+//     {data: '05/12/2022', categoria: 'Empréstimo', valor: 600.00, tipo: 'R'},
+// ]
 
 export const Movimentacoes = ({navigation}) => {
+
+    const stock = useSelector((state: storeStateType) => state.stock);
+    let transacao: Transacao[] = stock.transacoes;
+
 
     /**
      * Renders
@@ -55,7 +62,7 @@ export const Movimentacoes = ({navigation}) => {
                             <Card style={styles.card} header={headerCardMovimentacoes}>
                                 
                                 {/* Tabela de Movimentações */}
-                                <Tabela data={data}/>
+                                <Tabela data={transacao}/>
 
                             </Card>
                         </Layout>

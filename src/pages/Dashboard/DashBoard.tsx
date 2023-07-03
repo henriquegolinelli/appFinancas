@@ -28,17 +28,13 @@ export const DashBoard = ({ navigation }: any) => {
     const init = async () => {
         await initDB()
 
-        updateRedux()
-    }
-
-    const updateRedux = () => {
         dispatch(getTransacoes())
         dispatch(getCategorias())
         dispatch(getContas())
     }
 
-    const updateTransacao = (transacao: Transacao) => {
-        dispatch(addTransacao(transacao))
+    const updateTransacoes = () => {
+        dispatch(getTransacoes())
     }
 
     /**
@@ -76,8 +72,8 @@ export const DashBoard = ({ navigation }: any) => {
                 </Layout>
             </View>
         </Layout>
-        <ModalDespesa isModal={visibleModalAddDespesa} setModal={(isVisible) => { setVisibleModalAddDespesa(isVisible)}} update={(payload) => {updateTransacao(payload)}}/>
-        <ModalTranferencia isModal={visibleModalAddTransferencia} setModal={(isVisible) => { setVisibleModalAddTransferencia(isVisible)}} update={() => {updateRedux()}}/>
-        <ModalReceita isModal={visibleModalAddReceita} setModal={(isVisible) => { setVisibleModalAddReceita(isVisible) }} update={() => {updateRedux()}}/>
+        <ModalDespesa isModal={visibleModalAddDespesa} setModal={(isVisible) => { setVisibleModalAddDespesa(isVisible)}} update={() => {updateTransacoes()}}/>
+        <ModalTranferencia isModal={visibleModalAddTransferencia} setModal={(isVisible) => { setVisibleModalAddTransferencia(isVisible)}} update={() => {updateTransacoes()}}/>
+        <ModalReceita isModal={visibleModalAddReceita} setModal={(isVisible) => { setVisibleModalAddReceita(isVisible) }} update={() => {updateTransacoes()}}/>
     </SafeAreaView>
 }

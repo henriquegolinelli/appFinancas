@@ -5,12 +5,18 @@ import { StyleSheet } from "react-native"
 import { useSelector } from "react-redux"
 import { storeStateType } from "../../../redux"
 import { Transacao } from "../../../model/transacao"
+import { TipoReceita } from "../../../model/tipoReceita"
+import { Cores } from "../../../model/cores"
 
 export const UltimosLancamentos = () => {
     //
     const stock = useSelector((state: storeStateType) => state.stock)
 
-    const transacoes: Transacao[] = stock.transacoes
+    let transacoes: Transacao[] = stock.transacoes
+
+    transacoes = transacoes.slice(-5).reverse()
+
+    transacoes
 
     // Header ultimos lançamentos
     const headerUltimosLancamentos = (props: ViewProps) => (
@@ -26,7 +32,7 @@ export const UltimosLancamentos = () => {
 
     //
     const renderItem = ({ item, index }: { item: Transacao, index: number }) => {
-        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoriaId) ?? {nome: "", cor: ""}
+        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoriaId) ?? {nome: "", cor: Cores.preto}
 
         return <>
             <ListItem>
@@ -44,7 +50,7 @@ export const UltimosLancamentos = () => {
 
                     </View>
                     <View>
-                        <Text status='danger' style={styles.itemPrice}>R$ {item.valor.toLocaleString("pt-br", { minimumFractionDigits: 2 })}</Text>
+                        <Text status={item.tipo == TipoReceita.despesa ? 'danger' : 'success'} style={styles.itemPrice}>R$ {item.valor.toLocaleString("pt-br", { minimumFractionDigits: 2 })}</Text>
                     </View>
                 </View>
             </ListItem>

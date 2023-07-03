@@ -3,28 +3,25 @@ import { useState } from "react";
 import { View, ViewProps } from "react-native"
 import { StyleSheet } from "react-native"
 import { PropsModal } from "../model";
-
-/**
- * Categorias
- */
-const dataSelectCategoria = [
-    'Alimentação',
-    'Cuidados Pessoais',
-    'Transporte',
-    'Viagem',
-    'Lazer'
-]
-
-/**
- * Contas
- */
-const dataSelectContas = [
-    'Principal (Corrente)',
-    'Secundária (Poupança)'
-]
-
+import { Transacao } from "../../../model/transacao";
+import { createTransacao } from "../../../configs/database";
+import { Conta } from "../../../model/conta";
+import { useSelector } from "react-redux";
+import { storeStateType } from "../../../redux";
+import { TipoReceita } from "../../../model/tipoReceita";
+import { Cores } from "../../../model/cores";
 
 export const ModalReceita = (props: PropsModal) => {
+    //
+    const stock = useSelector((state: storeStateType) => state.stock)
+    
+    //
+    let categorias: Categoria[] = stock.categorias
+    
+    categorias = categorias.filter(categoria => categoria.cor == Cores.verde)
+
+    const contas: Conta[] = stock.contas
+    
     // Props
     const isActive: boolean = props.isModal
     const setModal = (isActive: boolean) => {
@@ -48,18 +45,52 @@ export const ModalReceita = (props: PropsModal) => {
     const [inputObsReceita, setInputObsReceita] = useState("")
 
     //
-    const displayValuesCategoriasReceita = dataSelectCategoria[selectCategoriaReceita.row];
-    const displayValueContasReceita = dataSelectContas[selectContaReceita.row];
+    const categoriaSelecionada = categorias[selectCategoriaReceita.row] ?? { id: 0, nome: "", cor: Cores.preto};
+    const contaSelecionada = contas[selectContaReceita.row] ?? {id: 0, nome: "", tipo: ""};
 
     // Select Options Categorias
-    const renderOptionsCategorias = (title) => (
-        <SelectItem title={title} key={title} />
+    const renderOptionsCategorias = (categoria: Categoria) => (
+        <SelectItem title={categoria.nome} key={categoria.id} />
     )
 
     // Select Options Contas
-    const renderOptionsContas = (title) => (
-        <SelectItem title={title} key={title} />
+    const renderOptionsContas = (contas: Conta) => (
+        <SelectItem title={contas.nome + " (" + contas.tipo + ")"} key={contas.id} />
     )
+    //
+    const handleAdicionar = async () => {
+        //
+        let valor: number = Number(inputValorReceita)
+        let obs: string = inputObsReceita
+
+        if (valor == 0) return
+        if (obs == "") return
+
+        //
+        let data: any = dateReceita
+
+        let dia: number = data.getDate()
+        let mes: number = data.getMonth() + 1
+        let ano: number = data.getFullYear()
+
+        data = ("0" + dia).slice(-2) + "/" + ("0" + mes).slice(-2) + "/" + ano
+
+        //
+        let transacao: Transacao = {
+            descricao: obs,
+            valor: valor,
+            data: data,
+            categoriaId: categoriaSelecionada.id,
+            contaId: contaSelecionada.id,
+            tipo: TipoReceita.receita
+        }
+
+        await createTransacao(transacao)
+        props.update()
+
+        setInputObsReceita("")
+        setInputValorReceita("")
+    }
 
     return <Modal visible={isActive} backdropStyle={styles.backdrop} onBackdropPress={() => setModal(false)} style={{ width: '85%' }}>
     <Card header={headerCardModalAddReceita}>
@@ -70,13 +101,13 @@ export const ModalReceita = (props: PropsModal) => {
         <Input placeholder='Ex.: 450.95' value={inputValorReceita} onChangeText={text => setInputValorReceita(text)} keyboardType='numeric'></Input>
 
         <Text style={styles.labelForm}>Categoria</Text>
-        <Select selectedIndex={selectCategoriaReceita} onSelect={(index: IndexPath) => setSelectCategoriaReceita(index)} value={displayValuesCategoriasReceita}>
-            {dataSelectCategoria.map(renderOptionsCategorias)}
+        <Select selectedIndex={selectCategoriaReceita} onSelect={(index: IndexPath) => setSelectCategoriaReceita(index)} value={categoriaSelecionada.nome}>
+            {categorias.map(renderOptionsCategorias)}
         </Select>
 
         <Text style={styles.labelForm}>Conta</Text>
-        <Select selectedIndex={selectContaReceita} onSelect={(index: IndexPath) => setSelectContaReceita(index)} value={displayValueContasReceita}>
-            {dataSelectContas.map(renderOptionsContas)}
+        <Select selectedIndex={selectContaReceita} onSelect={(index: IndexPath) => setSelectContaReceita(index)} value={contaSelecionada.nome + " (" + contaSelecionada.tipo + ")"}>
+            {contas.map(renderOptionsContas)}
         </Select>
 
         <Text style={styles.labelForm}>Observação</Text>
@@ -86,7 +117,7 @@ export const ModalReceita = (props: PropsModal) => {
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Button status='danger' onPress={() => setModal(false)}>CANCELAR</Button>
-            <Button status='success' onPress={() => console.log('Adicionar Pressionado!!')}>ADICIONAR</Button>
+            <Button status='success' onPress={async () => {await handleAdicionar()}}>ADICIONAR</Button>
         </View>
 
     </Card>

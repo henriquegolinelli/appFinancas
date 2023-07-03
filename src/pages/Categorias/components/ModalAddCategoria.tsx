@@ -4,24 +4,28 @@ import { Styles as styles } from '../../../common/style/stylesheet';
 import { useState } from 'react';
 import { ViewProps, View } from 'react-native';
 import { ModalProps } from '../model';
-
-const dataTipos = [
-    'Despesas',
-    'Receitas'
-]
+import { TipoReceita } from '../../../model/tipoReceita';
+import { createCategoria } from '../../../configs/database';
+import { Cores } from '../../../model/cores';
 
 export const ModalAddCategoria = (props:ModalProps) => {
+    //
+    let tipoEnum: string[] = []
+
+    for (let enumV in TipoReceita) {
+      tipoEnum.push(enumV.toUpperCase())
+    }
 
     const isActive: boolean = props.open
     const setModal = (isActive: boolean) => {
         props.setOpen(isActive)
     }
 
+    //
     const [inputNomeCategoria, setInputNomeCategoria] = useState<string>('')
-
     const [selectIndexTipo, setSelectIndexTipo] = useState<IndexPath>(new IndexPath(0))
 
-    const displayValueTipo = dataTipos[selectIndexTipo.row]
+    const tiposDisplay = tipoEnum[selectIndexTipo.row]
 
     
     const renderItemSelect = (title) => (
@@ -33,6 +37,31 @@ export const ModalAddCategoria = (props:ModalProps) => {
             <Text category="h5" style={{textAlign: 'center'}}>Criar Categoria</Text>
         </View>
     )
+
+  //
+  const handleAdd = async () => {
+    let nome: string = inputNomeCategoria
+    let tipo: string = tiposDisplay
+    let cor: Cores = Cores.preto
+
+    if (nome == "") return
+
+    if (tipo == "DESPESA") cor = Cores.vermelho
+
+    if (tipo == "RECEITA") cor = Cores.verde
+
+    if (cor == Cores.preto) return
+
+    let categoria: Categoria = {
+      nome: nome,
+      cor: cor
+    }
+
+    await createCategoria(categoria)
+    props.update()
+
+    setInputNomeCategoria("")
+  }
     
   return <Modal
       visible={isActive}
@@ -53,10 +82,10 @@ export const ModalAddCategoria = (props:ModalProps) => {
         <Select
           selectedIndex={selectIndexTipo}
           onSelect={(index: IndexPath) => setSelectIndexTipo(index)}
-          value={displayValueTipo}
+          value={tiposDisplay}
           style={{ marginBottom: 10 }}
         >
-          {dataTipos.map(renderItemSelect)}
+          {tipoEnum.map(renderItemSelect)}
         </Select>
         <View
           style={{
@@ -74,7 +103,7 @@ export const ModalAddCategoria = (props:ModalProps) => {
           >
             Cancelar
           </Button>
-          <Button status="success" style={{ width: "45%" }}>
+          <Button status="success" style={{ width: "45%" }} onPress={async () => {await handleAdd()}}>
             Cadastrar
           </Button>
         </View>

@@ -10,16 +10,18 @@ import { TipoReceita } from "../../../model/tipoReceita";
 import { createTransacao } from "../../../configs/database";
 import { getCategorias, getTransacoes } from "../../../redux/Redux.store";
 import { Conta } from "../../../model/conta";
+import { Cores } from "../../../model/cores";
 
 export const ModalDespesa = (props: PropsModal) => {
     //
     const stock = useSelector((state: storeStateType) => state.stock)
 
     //
-    const categorias: Categoria[] = stock.categorias
-    const contas: Conta[] = stock.contas
-
+    let categorias: Categoria[] = stock.categorias
     
+    categorias = categorias.filter(categoria => categoria.cor == Cores.vermelho)
+
+    const contas: Conta[] = stock.contas
 
     // Props
     const isActive: boolean = props.isModal
@@ -86,7 +88,7 @@ export const ModalDespesa = (props: PropsModal) => {
         }
 
         await createTransacao(transacao)
-        props.update(transacao)
+        props.update()
 
         setInputObsDespesa("")
         setInputValorDespesa("")

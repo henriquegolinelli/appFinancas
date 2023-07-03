@@ -19,6 +19,8 @@ export const ModalDespesa = (props: PropsModal) => {
     const categorias: Categoria[] = stock.categorias
     const contas: Conta[] = stock.contas
 
+    
+
     // Props
     const isActive: boolean = props.isModal
     const setModal = (isActive: boolean) => {
@@ -52,7 +54,7 @@ export const ModalDespesa = (props: PropsModal) => {
 
     // Select Options Contas
     const renderOptionsContas = (contas: Conta) => (
-        <SelectItem title={contaSelecionada.nome + " (" + contaSelecionada.tipo + ")"} key={contas.id} />
+        <SelectItem title={contas.nome + " (" + contas.tipo + ")"} key={contas.id} />
     )
 
     //

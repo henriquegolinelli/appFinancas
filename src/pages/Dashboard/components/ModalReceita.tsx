@@ -31,15 +31,15 @@ export const ModalReceita = (props: PropsModal) => {
         props.setModal(isActive)
     }
 
-    // Card header Add Despesa
-    const headerCardModalAddDespesa = (props: ViewProps) => (
+    // Card header Add Receita
+    const headerCardModalAddReceita = (props: ViewProps) => (
         <View {...props}>
-            <Text style={{ fontWeight: 'bold', fontSize: 22, textAlign: 'center' }}>Adicionar Despesa</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 22, textAlign: 'center' }}>Adicionar Receita</Text>
         </View>
     )
 
     /**
-     * States do formulario Add Despesa
+     * States do formulario Add Receita
      */
     const [dateReceita, setDateReceita] = useState<Date>(new Date())
     const [inputValorReceita, setInputValorReceita] = useState<string>("")
@@ -62,7 +62,7 @@ export const ModalReceita = (props: PropsModal) => {
     )
 
     return <Modal visible={isActive} backdropStyle={styles.backdrop} onBackdropPress={() => setModal(false)} style={{ width: '85%' }}>
-    <Card header={headerCardModalAddDespesa}>
+    <Card header={headerCardModalAddReceita}>
         <Text>Data</Text>
         <Datepicker date={dateReceita} onSelect={nextDate => setDateReceita(nextDate)}></Datepicker>
 

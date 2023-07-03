@@ -5,6 +5,7 @@ import { useSelector } from "react-redux"
 import { storeStateType } from "../../../redux"
 import { Transacao } from "../../../model/transacao"
 import { TipoReceita } from "../../../model/tipoReceita"
+import { Cores } from "../../../model/cores"
 
 interface CardItemGastoDoMesProps {
     categoria: number
@@ -72,7 +73,7 @@ export const GastoMes = () => {
     )
 
     const renderItem = ({ item, index }: { item: CardItemGastoDoMesProps; index: number }) => {
-        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoria) ?? { nome: "", cor: "" }
+        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoria) ?? { nome: "", cor: Cores.preto }
 
         return <>
             <ListItem>

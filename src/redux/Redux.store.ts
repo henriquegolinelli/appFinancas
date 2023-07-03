@@ -23,6 +23,9 @@ const stock = createSlice({
         },
         addTransacao: (state, action) => {
             state.transacoes.push(action.payload)
+        },
+        addCategoria: (state, action) => {
+            state.categorias.push(action.payload)
         }
     },
     extraReducers: (builder) => {
@@ -65,5 +68,5 @@ export const getContas = createAsyncThunk(
     }
 )
 
-export const { increment, decrement, addTransacao } = stock.actions
+export const { increment, decrement, addTransacao, addCategoria } = stock.actions
 export const stockReducer = stock.reducer

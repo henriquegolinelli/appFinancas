@@ -6,5 +6,5 @@
 abstract class Categoria {
     id?: number
     nome: string
-    cor: string
+    cor: Cores
 }

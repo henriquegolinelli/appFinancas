@@ -2,6 +2,7 @@ import SQLite from "react-native-sqlite-storage"
 import { TipoReceita } from "../model/tipoReceita"
 import { Transacao } from "../model/transacao"
 import { Conta } from "../model/conta"
+import { Cores } from "../model/cores"
 
 SQLite.enablePromise(true)
 
@@ -80,8 +81,9 @@ export const initDB = async () => {
     // Categorias
     await db.executeSql("CREATE TABLE Categorias(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, cor TEXT)")
 
-    await createCategoria({nome: "Alimento", cor: "VERMELHOR"})
-    await createCategoria({nome: "Higiene", cor: "PRETO"})
+    await createCategoria({nome: "Alimento", cor: Cores.vermelho})
+    await createCategoria({nome: "Higiene", cor: Cores.vermelho})
+    await createCategoria({nome: "Doação", cor: Cores.verde})
 
     // Contas
     await db.executeSql("CREATE TABLE Contas(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, tipo TEXT)")

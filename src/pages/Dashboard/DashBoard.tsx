@@ -4,14 +4,13 @@ import { Icon, IconElement, IconProps, Layout, TopNavigation, TopNavigationActio
 import { SaldoTotal } from "./components/SaldoTotal"
 import { useEffect, useState } from "react"
 import { initDB } from "../../configs/database"
-import { addTransacao, getCategorias, getContas, getTransacoes } from "../../redux/Redux.store"
+import { getCategorias, getContas, getTransacoes } from "../../redux/Redux.store"
 import { useDispatch } from "react-redux"
 import { UltimosLancamentos } from "./components/UltimosLancamentos"
 import { GastoMes } from "./components/GastoMes"
 import { ModalDespesa } from "./components/ModalDespesas"
 import { ModalTranferencia } from "./components/ModalTransferencia"
 import { ModalReceita } from "./components/ModalReceita"
-import { Transacao } from "../../model/transacao"
 
 export const DashBoard = ({ navigation }: any) => {
     /**

@@ -6,6 +6,7 @@ import { storeStateType } from "../../../redux"
 import { Transacao } from "../../../model/transacao"
 import { TipoReceita } from "../../../model/tipoReceita"
 import { Cores } from "../../../model/cores"
+import { isAtualMes } from "../../../common/util/dateUtils"
 
 interface CardItemGastoDoMesProps {
     categoria: number
@@ -27,13 +28,9 @@ export const GastoMes = () => {
 
         if (transacao.tipo == TipoReceita.receita) continue
 
-        let data: string[] = transacao.data.split("/")
+        let date: string[] = transacao.data.split("/")
 
-        let atualMes: string = (new Date().getMonth() + 1).toString()
-
-        atualMes = ("0" + atualMes).slice(-2)
-
-        if (data[1] != atualMes) continue
+        if (!isAtualMes(date[1])) continue
 
         gastos.push(transacao)
     }

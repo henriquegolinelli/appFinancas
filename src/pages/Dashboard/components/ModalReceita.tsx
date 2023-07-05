@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import { storeStateType } from "../../../redux";
 import { TipoReceita } from "../../../model/tipoReceita";
 import { Cores } from "../../../model/cores";
+import { toDateString } from "../../../common/util/dateUtils";
+import { getContaText } from "../../../common/util/dbUtils";
 
 export const ModalReceita = (props: PropsModal) => {
     //
@@ -54,8 +56,8 @@ export const ModalReceita = (props: PropsModal) => {
     )
 
     // Select Options Contas
-    const renderOptionsContas = (contas: Conta) => (
-        <SelectItem title={contas.nome + " (" + contas.tipo + ")"} key={contas.id} />
+    const renderOptionsContas = (conta: Conta) => (
+        <SelectItem title={getContaText(conta)} key={conta.id} />
     )
     //
     const handleAdicionar = async () => {
@@ -67,19 +69,13 @@ export const ModalReceita = (props: PropsModal) => {
         if (obs == "") return
 
         //
-        let data: any = dateReceita
-
-        let dia: number = data.getDate()
-        let mes: number = data.getMonth() + 1
-        let ano: number = data.getFullYear()
-
-        data = ("0" + dia).slice(-2) + "/" + ("0" + mes).slice(-2) + "/" + ano
+        let date: string = toDateString(dateReceita)
 
         //
         let transacao: Transacao = {
             descricao: obs,
             valor: valor,
-            data: data,
+            data: date,
             categoriaId: categoriaSelecionada.id,
             contaId: contaSelecionada.id,
             tipo: TipoReceita.receita
@@ -106,7 +102,7 @@ export const ModalReceita = (props: PropsModal) => {
         </Select>
 
         <Text style={styles.labelForm}>Conta</Text>
-        <Select selectedIndex={selectContaReceita} onSelect={(index: IndexPath) => setSelectContaReceita(index)} value={contaSelecionada.nome + " (" + contaSelecionada.tipo + ")"}>
+        <Select selectedIndex={selectContaReceita} onSelect={(index: IndexPath) => setSelectContaReceita(index)} value={getContaText(contaSelecionada)}>
             {contas.map(renderOptionsContas)}
         </Select>
 

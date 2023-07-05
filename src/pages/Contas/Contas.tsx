@@ -32,6 +32,7 @@ import { Transacao } from "../../model/transacao";
 import { Conta } from "../../model/conta";
 import { getContas } from "../../redux/Redux.store";
 import { TipoReceita } from "../../model/tipoReceita";
+import { ModalDelete } from "../../components/ModalDelete/ModalDelete";
 
 interface ListItemProps {
   nome: string;
@@ -101,10 +102,21 @@ export const ContasView = ({ navigation }) => {
    * States da página e formulário
    */
   const [modalAddConta, setModalAddConta] = useState<boolean>(false);
+  const [modalDeleteConta, setModalDeleteConta] = useState<boolean>(false);
+
+  const [selectedID, setSelectedID] = useState<number>(0);
+  const [selectedName, setSelectedName] = useState<string>();
 
   /**
    * Funções
    */
+
+  const deleteConta = (contaID:number, nomeConta?: string) => {
+    console.log(`ID CONTA: ${contaID}, NOME: ${nomeConta}`);
+    setSelectedID(contaID);
+    setSelectedName(nomeConta);
+    setModalDeleteConta(true);
+  }
 
   /**
    * Renders
@@ -138,6 +150,8 @@ export const ContasView = ({ navigation }) => {
       contas.find((conta) => conta.id == item[0]?.contaId)?.nome ?? "";
     let tipo: string =
       contas.find((conta) => conta.id == item[0]?.contaId)?.tipo ?? "";
+    
+      let contaID = contas.find(conta => conta.id == item[0]?.contaId);
 
     item.forEach((transacao) => {
       valor += transacao.valor;
@@ -145,7 +159,7 @@ export const ContasView = ({ navigation }) => {
 
     return (
       <>
-        <ListItem style={{ width: "100%" }}>
+        <ListItem style={{ width: "100%" }} onPress={()=>deleteConta(contaID.id, contaID.nome)}>
 
           <View
             style={{
@@ -162,7 +176,7 @@ export const ContasView = ({ navigation }) => {
                 <Text style={{fontSize: 14, textAlign: 'center' }}>{tipo}</Text>
             </View>
             <View style={{width: '34%'}}>
-                <Text style={{fontSize: 14, textAlign: 'right' }}>
+                <Text status={valor < 0 ? 'danger': 'success'} style={{fontSize: 14, textAlign: 'right' }}>
                 R$ {valor.toLocaleString("pt-br", { minimumFractionDigits: 2 })}
                 </Text>
             </View>
@@ -265,6 +279,7 @@ export const ContasView = ({ navigation }) => {
               updateContas();
             }}
           />
+          <ModalDelete open={modalDeleteConta} setOpen={open => setModalDeleteConta(open)} modalTitle="Excluir Conta" idRemover={selectedID} nomeRemover={selectedName}/>
         </Layout>
       </Layout>
     </SafeAreaView>

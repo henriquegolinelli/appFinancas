@@ -111,12 +111,12 @@ export const ContasView = ({ navigation }) => {
    * Funções
    */
 
-  const deleteConta = (contaID:number, nomeConta?: string) => {
+  const deleteConta = (contaID: number, nomeConta?: string) => {
     console.log(`ID CONTA: ${contaID}, NOME: ${nomeConta}`);
     setSelectedID(contaID);
     setSelectedName(nomeConta);
     setModalDeleteConta(true);
-  }
+  };
 
   /**
    * Renders
@@ -150,8 +150,8 @@ export const ContasView = ({ navigation }) => {
       contas.find((conta) => conta.id == item[0]?.contaId)?.nome ?? "";
     let tipo: string =
       contas.find((conta) => conta.id == item[0]?.contaId)?.tipo ?? "";
-    
-      let contaID = contas.find(conta => conta.id == item[0]?.contaId);
+
+    let contaID = contas.find((conta) => conta.id == item[0]?.contaId);
 
     item.forEach((transacao) => {
       valor += transacao.valor;
@@ -159,8 +159,10 @@ export const ContasView = ({ navigation }) => {
 
     return (
       <>
-        <ListItem style={{ width: "100%" }} onPress={()=>deleteConta(contaID.id, contaID.nome)}>
-
+        <ListItem
+          style={{ width: "100%" }}
+          onPress={() => deleteConta(contaID.id, contaID.nome)}
+        >
           <View
             style={{
               width: "100%",
@@ -168,19 +170,20 @@ export const ContasView = ({ navigation }) => {
               justifyContent: "space-between",
             }}
           >
-
-            <View style={{width: '33%'}}>
-                <Text style={{fontSize: 14, textAlign: 'left' }}>{conta}</Text>
+            <View style={{ width: "33%" }}>
+              <Text style={{ fontSize: 14, textAlign: "left" }}>{conta}</Text>
             </View>
-            <View style={{width: '33%'}}>
-                <Text style={{fontSize: 14, textAlign: 'center' }}>{tipo}</Text>
+            <View style={{ width: "33%" }}>
+              <Text style={{ fontSize: 14, textAlign: "center" }}>{tipo}</Text>
             </View>
-            <View style={{width: '34%'}}>
-                <Text status={valor < 0 ? 'danger': 'success'} style={{fontSize: 14, textAlign: 'right' }}>
+            <View style={{ width: "34%" }}>
+              <Text
+                status={valor < 0 ? "danger" : "success"}
+                style={{ fontSize: 14, textAlign: "right" }}
+              >
                 R$ {valor.toLocaleString("pt-br", { minimumFractionDigits: 2 })}
-                </Text>
+              </Text>
             </View>
-
           </View>
         </ListItem>
         <Divider></Divider>
@@ -279,7 +282,13 @@ export const ContasView = ({ navigation }) => {
               updateContas();
             }}
           />
-          <ModalDelete open={modalDeleteConta} setOpen={open => setModalDeleteConta(open)} modalTitle="Excluir Conta" idRemover={selectedID} nomeRemover={selectedName}/>
+          <ModalDelete
+            open={modalDeleteConta}
+            setOpen={(open) => setModalDeleteConta(open)}
+            modalTitle="Excluir Conta"
+            idRemover={selectedID}
+            nomeRemover={selectedName}
+          />
         </Layout>
       </Layout>
     </SafeAreaView>

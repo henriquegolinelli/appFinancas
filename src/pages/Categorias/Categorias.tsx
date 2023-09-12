@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { storeStateType } from "../../redux"
 import { Cores } from "../../model/cores"
 import { addCategoria, getCategorias, getContas, getTransacoes } from "../../redux/Redux.store"
+import { ModalDelete } from "../../components/ModalDelete/ModalDelete"
 
 interface ListItemProps {
     nome: string
@@ -59,10 +60,21 @@ export const Categorias = ({ navigation }) => {
 
     const [modalOpen, setModalOpen] = useState<boolean>(false)
 
+    const [selectedID, setSelectedID] = useState<number>(0);
+    const [selectedName, setSelectedName] = useState<string>();
+
+    const [modalDeleteCategoria, setModalDeleteCategori] = useState<boolean>(false);
+
 
     /**
     * Funções
     */
+    const deleteCategoria = (categoriaID: number, nomeCategoria?: string) => {
+        console.log(`ID CATEGORIA: ${categoriaID}, NOME: ${nomeCategoria}`);
+        setSelectedID(categoriaID);
+        setSelectedName(nomeCategoria);
+        setModalDeleteCategori(true);
+    };
 
 
     /**
@@ -75,9 +87,20 @@ export const Categorias = ({ navigation }) => {
         <TopNavigationAction icon={BackIcon} onPress={() => { navigation.goBack() }} />
     )
 
-    const renderItemLista = ({ item, index }: { item: Categoria, index: number }) => (
-        <ListItem accessoryLeft={<Icon name="menu" style={{ tintColor: "black", width: 30, height: 30 }}></Icon>} title={item.nome} />
-    )
+    const renderItemLista = ({ item, index }: { item: Categoria; index: number;}) => {
+
+        // let categoria: string = categorias.find((categoria) => categoria.id == item.id)?.nome ?? "";
+        // let cor: string = categorias.find((categoria) => categoria.id == item.id)?.cor ?? "";
+
+        let categoriaID = categorias.find((categoria) => categoria.id == item.id);
+
+        return (
+            <>
+                <ListItem accessoryLeft={<Icon name="menu" style={{ tintColor: "black", width: 30, height: 30 }}></Icon>} title={item.nome} onPress={()=>{deleteCategoria(categoriaID.id, categoriaID.nome)}}/>
+            </>
+        )
+
+    }
 
     /**
      * Card header / footer
@@ -128,6 +151,13 @@ export const Categorias = ({ navigation }) => {
                     </View>
                     {/* Modal Add Categoria */}
                     <ModalAddCategoria open={modalOpen} setOpen={open => setModalOpen(open)} update={() => {updateCategoria()}}/>
+                    <ModalDelete
+                        open={modalDeleteCategoria}
+                        setOpen={(open) => setModalDeleteCategori(open)}
+                        modalTitle="Excluir Categoria"
+                        idRemover={selectedID}
+                        nomeRemover={selectedName}
+                    />
                 </Layout>
             </Layout>
         </SafeAreaView>

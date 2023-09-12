@@ -109,3 +109,6 @@ export const createConta = async (conta: Conta) => {
 
     await db.executeSql("INSERT INTO Contas(nome, tipo) VALUES(?, ?)", [conta.nome, conta.tipo])
 }
+
+// Criar deleteCategoria
+// Criar deleteContas

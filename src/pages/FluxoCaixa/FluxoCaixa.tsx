@@ -8,6 +8,7 @@ import { Styles as styles } from "../../common/style/stylesheet"
 import { useSelector } from "react-redux"
 import { storeStateType } from "../../redux"
 import { Transacao } from "../../model/transacao"
+import { ModalDelete } from "../../components/ModalDelete/ModalDelete"
 
 const MenuIcon = (props:IconProps): IconElement => (
     <Icon {...props} name='menu' />
@@ -28,6 +29,16 @@ export const FluxoCaixaView = ({navigation}) => {
     const stock = useSelector((state: storeStateType) => state.stock);
 
     let transacao: Transacao[] = stock.transacoes;
+
+    /*
+    *  States
+    */
+    
+
+    /*
+    *  Funções
+    */
+    
 
     /**
      * Renders

@@ -6,4 +6,7 @@ export interface ModalDeleteProps {
     modalTitle: string
     idRemover: number
     nomeRemover?: string
+
+    operacao: number
+    update: () => void
 }

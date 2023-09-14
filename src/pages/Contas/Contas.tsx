@@ -288,6 +288,8 @@ export const ContasView = ({ navigation }) => {
             modalTitle="Excluir Conta"
             idRemover={selectedID}
             nomeRemover={selectedName}
+            operacao={1}
+            update={()=>{updateContas()}}
           />
         </Layout>
       </Layout>

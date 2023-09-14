@@ -18,6 +18,7 @@ interface DataProps {
 
 interface TabelaProps {
     data: Transacao[]
+    update: () => void
 }
 
 export const Tabela = (props:TabelaProps) => {
@@ -102,6 +103,8 @@ export const Tabela = (props:TabelaProps) => {
                 modalTitle="Excluir Transação"
                 idRemover={transacaoId}
                 nomeRemover={transacaoTipo}
+                operacao={3}
+                update={()=>{props.update()}}
             />
         </View>
     )

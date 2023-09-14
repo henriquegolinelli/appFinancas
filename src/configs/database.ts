@@ -111,4 +111,22 @@ export const createConta = async (conta: Conta) => {
 }
 
 // Criar deleteCategoria
+export const deleteConta = async (id: number) => {
+    let db = await getDB();
+
+    await db.executeSql("DELETE FROM Contas WHERE id == (?)", [id])
+}
+
 // Criar deleteContas
+export const deleteCategoria = async (id: number) => {
+    let db = await getDB();
+
+    await db.executeSql("DELETE FROM Categorias WHERE id == (?)", [id]);
+}
+
+// Deleta transacao
+export const deleteTransacao = async (id: number) => {
+    let db = await getDB();
+
+    await db.executeSql("DELETE FROM Transacoes WHERE id == (?)", [id]);
+}

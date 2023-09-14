@@ -5,10 +5,11 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { Tabela } from "../../components/Tabela/Tabela"
 import { Form } from "./components/Form"
 import { Styles as styles } from "../../common/style/stylesheet"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { storeStateType } from "../../redux"
 import { Transacao } from "../../model/transacao"
 import { ModalDelete } from "../../components/ModalDelete/ModalDelete"
+import { getTransacoes } from "../../redux/Redux.store"
 
 const MenuIcon = (props:IconProps): IconElement => (
     <Icon {...props} name='menu' />
@@ -30,6 +31,8 @@ export const FluxoCaixaView = ({navigation}) => {
 
     let transacao: Transacao[] = stock.transacoes;
 
+    const dispatch = useDispatch<any>()
+
     /*
     *  States
     */
@@ -38,7 +41,9 @@ export const FluxoCaixaView = ({navigation}) => {
     /*
     *  Funções
     */
-    
+    const updateFluxoCaixa = () => {
+        dispatch(getTransacoes());
+    }
 
     /**
      * Renders
@@ -71,7 +76,9 @@ export const FluxoCaixaView = ({navigation}) => {
                             <Card style={styles.card} header={headerCardLancamentos}>
                                 
                                 {/* Tabela de Fluxo de Caixa */}
-                                <Tabela data={transacao}/>
+                                <Tabela data={transacao} update={()=>{
+                                    updateFluxoCaixa()
+                                }}/>
 
                             </Card>
                         </Layout>

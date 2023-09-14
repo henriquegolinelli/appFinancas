@@ -157,6 +157,8 @@ export const Categorias = ({ navigation }) => {
                         modalTitle="Excluir Categoria"
                         idRemover={selectedID}
                         nomeRemover={selectedName}
+                        operacao={2}
+                        update={()=>{updateCategoria()}}
                     />
                 </Layout>
             </Layout>

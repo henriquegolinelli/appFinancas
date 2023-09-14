@@ -105,6 +105,7 @@ export const Tabela = (props:TabelaProps) => {
                 nomeRemover={transacaoTipo}
                 operacao={3}
                 update={()=>{props.update()}}
+                after={()=>{setModalDeleteTransacao(false)}}
             />
         </View>
     )

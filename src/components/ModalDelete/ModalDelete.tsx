@@ -29,6 +29,7 @@ export const ModalDelete = (props:ModalDeleteProps) => {
                 
                 await deleteConta(idDelete);
                 props.update();
+                props.after();
             }
             break;
 
@@ -38,6 +39,7 @@ export const ModalDelete = (props:ModalDeleteProps) => {
 
                 await deleteCategoria(idDelete);
                 props.update();
+                props.after();
             }
             break;
 
@@ -47,6 +49,7 @@ export const ModalDelete = (props:ModalDeleteProps) => {
 
                 await deleteTransacao(idDelete);
                 props.update()
+                props.after();
             }
             break;
     

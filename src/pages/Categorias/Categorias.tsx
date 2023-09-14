@@ -159,6 +159,7 @@ export const Categorias = ({ navigation }) => {
                         nomeRemover={selectedName}
                         operacao={2}
                         update={()=>{updateCategoria()}}
+                        after={()=>{setModalDeleteCategori(false)}}
                     />
                 </Layout>
             </Layout>

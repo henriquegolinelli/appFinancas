@@ -9,4 +9,5 @@ export interface ModalDeleteProps {
 
     operacao: number
     update: () => void
+    after?: () => void
 }

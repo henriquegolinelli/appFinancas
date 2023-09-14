@@ -290,6 +290,7 @@ export const ContasView = ({ navigation }) => {
             nomeRemover={selectedName}
             operacao={1}
             update={()=>{updateContas()}}
+            after={()=>{setModalDeleteConta(false)}}
           />
         </Layout>
       </Layout>

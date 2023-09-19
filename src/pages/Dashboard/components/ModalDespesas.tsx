@@ -10,9 +10,9 @@ import { TipoReceita } from "../../../model/tipoReceita";
 import { createTransacao } from "../../../configs/database";
 import { getCategorias, getTransacoes } from "../../../redux/Redux.store";
 import { Conta } from "../../../model/conta";
-import { Cores } from "../../../model/cores";
 import { toDateString } from "../../../common/util/dateUtils";
 import { getContaText } from "../../../common/util/dbUtils";
+import { Categoria } from "../../../model/categoria";
 
 export const ModalDespesa = (props: PropsModal) => {
     //
@@ -21,7 +21,7 @@ export const ModalDespesa = (props: PropsModal) => {
     //
     let categorias: Categoria[] = stock.categorias
     
-    categorias = categorias.filter(categoria => categoria.cor == Cores.vermelho)
+    categorias = categorias.filter(categoria => categoria.tipo === "despesa")
 
     const contas: Conta[] = stock.contas
 

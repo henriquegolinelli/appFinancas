@@ -3,8 +3,9 @@
  * 
  * @abstract categoria
  */
-abstract class Categoria {
+export abstract class Categoria {
     id?: number
     nome: string
-    cor: Cores
+    tipo: "despesa" | "receita" | ""
+    icone: string
 }

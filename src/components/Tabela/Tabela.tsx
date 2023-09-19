@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import { storeStateType } from "../../redux"
 import { ModalDelete } from "../ModalDelete/ModalDelete"
 import { useState } from "react"
+import { Categoria } from "../../model/categoria"
 
 interface DataProps {
     id?: number
@@ -18,7 +19,7 @@ interface DataProps {
 
 interface TabelaProps {
     data: Transacao[]
-    update: () => void
+    update?: () => void
 }
 
 export const Tabela = (props:TabelaProps) => {

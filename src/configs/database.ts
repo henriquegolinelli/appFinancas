@@ -2,7 +2,7 @@ import SQLite from "react-native-sqlite-storage"
 import { TipoReceita } from "../model/tipoReceita"
 import { Transacao } from "../model/transacao"
 import { Conta } from "../model/conta"
-import { Cores } from "../model/cores"
+import { Categoria } from "../model/categoria"
 
 SQLite.enablePromise(true)
 
@@ -79,11 +79,11 @@ export const initDB = async () => {
     await createTransacao({ descricao: "Pera", valor: -5.00, tipo: TipoReceita.despesa, data: "03/07/2023", categoriaId: 1, contaId: 1 })
 
     // Categorias
-    await db.executeSql("CREATE TABLE Categorias(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, cor TEXT)")
+    await db.executeSql("CREATE TABLE Categorias(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, tipo TEXT, icone TEXT)")
 
-    await createCategoria({nome: "Alimento", cor: Cores.vermelho})
-    await createCategoria({nome: "Higiene", cor: Cores.vermelho})
-    await createCategoria({nome: "Doação", cor: Cores.verde})
+    await createCategoria({nome: "Alimento", tipo: "despesa", icone: ""})
+    await createCategoria({nome: "Higiene", tipo: "despesa", icone: ""})
+    await createCategoria({nome: "Doação", tipo: "despesa", icone: ""})
 
     // Contas
     await db.executeSql("CREATE TABLE Contas(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, tipo TEXT)")
@@ -101,7 +101,7 @@ export const createTransacao = async (transacao: Transacao) => {
 export const createCategoria = async (categoria: Categoria) => {
     let db = await getDB()
 
-    await db.executeSql("INSERT INTO Categorias(nome, cor) VALUES(?, ?)", [categoria.nome, categoria.cor])
+    await db.executeSql("INSERT INTO Categorias(nome, tipo, icone) VALUES(?, ?, ?)", [categoria.nome, categoria.tipo, categoria.icone])
 }
 
 export const createConta = async (conta: Conta) => {

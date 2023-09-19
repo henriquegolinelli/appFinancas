@@ -6,7 +6,7 @@ import { useSelector } from "react-redux"
 import { storeStateType } from "../../../redux"
 import { Transacao } from "../../../model/transacao"
 import { TipoReceita } from "../../../model/tipoReceita"
-import { Cores } from "../../../model/cores"
+import { Categoria } from "../../../model/categoria"
 
 export const UltimosLancamentos = () => {
     //
@@ -32,7 +32,7 @@ export const UltimosLancamentos = () => {
 
     //
     const renderItem = ({ item, index }: { item: Transacao, index: number }) => {
-        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoriaId) ?? {nome: "", cor: Cores.preto}
+        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoriaId) ?? {nome: "", tipo: "", icone: ""}
 
         return <>
             <ListItem>

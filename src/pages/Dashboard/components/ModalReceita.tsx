@@ -9,9 +9,9 @@ import { Conta } from "../../../model/conta";
 import { useSelector } from "react-redux";
 import { storeStateType } from "../../../redux";
 import { TipoReceita } from "../../../model/tipoReceita";
-import { Cores } from "../../../model/cores";
 import { toDateString } from "../../../common/util/dateUtils";
 import { getContaText } from "../../../common/util/dbUtils";
+import { Categoria } from "../../../model/categoria";
 
 export const ModalReceita = (props: PropsModal) => {
     //
@@ -20,7 +20,7 @@ export const ModalReceita = (props: PropsModal) => {
     //
     let categorias: Categoria[] = stock.categorias
     
-    categorias = categorias.filter(categoria => categoria.cor == Cores.verde)
+    const newLocal = categorias = categorias.filter(categoria => categoria.tipo === "receita");
 
     const contas: Conta[] = stock.contas
     
@@ -47,7 +47,7 @@ export const ModalReceita = (props: PropsModal) => {
     const [inputObsReceita, setInputObsReceita] = useState("")
 
     //
-    const categoriaSelecionada = categorias[selectCategoriaReceita.row] ?? { id: 0, nome: "", cor: Cores.preto};
+    const categoriaSelecionada = categorias[selectCategoriaReceita.row] ?? { id: 0, nome: "", tipo: "", icone: ""};
     const contaSelecionada = contas[selectContaReceita.row] ?? {id: 0, nome: "", tipo: ""};
 
     // Select Options Categorias

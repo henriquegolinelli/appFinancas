@@ -6,7 +6,7 @@ import { ViewProps, View } from 'react-native';
 import { ModalProps } from '../model';
 import { TipoReceita } from '../../../model/tipoReceita';
 import { createCategoria } from '../../../configs/database';
-import { Cores } from '../../../model/cores';
+import { Categoria } from '../../../model/categoria';
 
 export const ModalAddCategoria = (props:ModalProps) => {
     //
@@ -42,19 +42,20 @@ export const ModalAddCategoria = (props:ModalProps) => {
   const handleAdd = async () => {
     let nome: string = inputNomeCategoria
     let tipo: string = tiposDisplay
-    let cor: Cores = Cores.preto
+    let tipoCategoria: "despesa" | "receita"
 
     if (nome == "") return
 
-    if (tipo == "DESPESA") cor = Cores.vermelho
+    if (tipo == "DESPESA") tipoCategoria = "despesa"
 
-    if (tipo == "RECEITA") cor = Cores.verde
+    if (tipo == "RECEITA") tipoCategoria = "receita"
 
-    if (cor == Cores.preto) return
+    if (!tipoCategoria) return
 
     let categoria: Categoria = {
       nome: nome,
-      cor: cor
+      tipo: tipoCategoria,
+      icone: ""
     }
 
     await createCategoria(categoria)

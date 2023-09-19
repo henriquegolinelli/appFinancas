@@ -5,9 +5,9 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { ModalAddCategoria } from "./components/ModalAddCategoria"
 import { useDispatch, useSelector } from "react-redux"
 import { storeStateType } from "../../redux"
-import { Cores } from "../../model/cores"
 import { addCategoria, getCategorias, getContas, getTransacoes } from "../../redux/Redux.store"
 import { ModalDelete } from "../../components/ModalDelete/ModalDelete"
+import { Categoria } from "../../model/categoria"
 
 interface ListItemProps {
     nome: string
@@ -43,9 +43,7 @@ export const Categorias = ({ navigation }) => {
     for (let i: number = 0; i < categorias.length; i++) {
         let categoria = categorias[i]
 
-        if (categoria.cor == Cores.preto) continue
-
-        if (categoria.cor == Cores.verde) {
+        if (categoria.tipo === "receita") {
             catReceitas.push(categoria)
 
             continue

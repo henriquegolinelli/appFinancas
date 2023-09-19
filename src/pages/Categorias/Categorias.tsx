@@ -8,6 +8,7 @@ import { storeStateType } from "../../redux"
 import { addCategoria, getCategorias, getContas, getTransacoes } from "../../redux/Redux.store"
 import { ModalDelete } from "../../components/ModalDelete/ModalDelete"
 import { Categoria } from "../../model/categoria"
+import { IconEnum } from "../../model/iconEnum"
 
 interface ListItemProps {
     nome: string
@@ -85,6 +86,10 @@ export const Categorias = ({ navigation }) => {
         <TopNavigationAction icon={BackIcon} onPress={() => { navigation.goBack() }} />
     )
 
+    const IconGood = ({props, category}:{props?:IconProps; category:IconEnum}): IconElement => (
+        <Icon {...props} name={category} style={{ tintColor: "black", width: 30, height: 30 }}></Icon>
+    )
+
     const renderItemLista = ({ item, index }: { item: Categoria; index: number;}) => {
 
         // let categoria: string = categorias.find((categoria) => categoria.id == item.id)?.nome ?? "";
@@ -94,7 +99,7 @@ export const Categorias = ({ navigation }) => {
 
         return (
             <>
-                <ListItem accessoryLeft={<Icon name="menu" style={{ tintColor: "black", width: 30, height: 30 }}></Icon>} title={item.nome} onPress={()=>{deleteCategoria(categoriaID.id, categoriaID.nome)}}/>
+                <ListItem accessoryLeft={<IconGood category={categoriaID.icone}/>} title={item.nome} onPress={()=>{deleteCategoria(categoriaID.id, categoriaID.nome)}}/>
             </>
         )
 

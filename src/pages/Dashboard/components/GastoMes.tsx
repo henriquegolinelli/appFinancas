@@ -7,6 +7,7 @@ import { Transacao } from "../../../model/transacao"
 import { TipoReceita } from "../../../model/tipoReceita"
 import { isAtualMes } from "../../../common/util/dateUtils"
 import { Categoria } from "../../../model/categoria"
+import { IconEnum } from "../../../model/iconEnum"
 
 interface CardItemGastoDoMesProps {
     categoria: number
@@ -65,18 +66,18 @@ export const GastoMes = () => {
     )
 
     //
-    const renderIconLeft = (props: IconProps): IconElement => (
-        <Icon {...props} name='cube'></Icon>
+    const IconGood = ({props, category}:{props?:IconProps; category:IconEnum}): IconElement => (
+        <Icon {...props} name={category} fill="black" style={{ width: 30, height: 30 }}></Icon>
     )
 
     const renderItem = ({ item, index }: { item: CardItemGastoDoMesProps; index: number }) => {
-        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoria) ?? { nome: "", tipo: "", icone: "" }
+        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoria) ?? { nome: "", tipo: "", icone: IconEnum.BOX }
 
         return <>
             <ListItem>
                 <View style={styles.container}>
                     <View style={styles.flexRowView}>
-                        <Icon name='smiling-face-outline' style={styles.iconLeft}></Icon>
+                        <IconGood category={categoria.icone}></IconGood>
                         <Text style={{ marginLeft: 20 }}>{categoria.nome}</Text>
                         <Text style={{ marginLeft: 'auto' }} status='danger'>R$ {item.valor.toFixed(2)}</Text>
                     </View>

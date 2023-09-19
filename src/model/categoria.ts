@@ -1,3 +1,5 @@
+import { IconEnum } from "./iconEnum"
+
 /**
  * Categoria
  * 
@@ -7,5 +9,5 @@ export abstract class Categoria {
     id?: number
     nome: string
     tipo: "despesa" | "receita" | ""
-    icone: string
+    icone: IconEnum
 }

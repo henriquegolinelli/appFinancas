@@ -27,7 +27,7 @@ export const UltimosLancamentos = () => {
 
     //
     const BoxIcon = (props: IconProps): React.ReactElement => (
-        <Icon {...props} name='cube' fill='black' style={{ width: 30, height: 30 }}></Icon>
+        <Icon {...props} name='menu' fill='black' style={{ width: 30, height: 30 }}></Icon>
     )
 
     //

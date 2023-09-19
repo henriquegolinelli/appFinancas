@@ -7,6 +7,7 @@ import { ModalProps } from '../model';
 import { TipoReceita } from '../../../model/tipoReceita';
 import { createCategoria } from '../../../configs/database';
 import { Categoria } from '../../../model/categoria';
+import { IconEnum } from '../../../model/iconEnum';
 
 export const ModalAddCategoria = (props:ModalProps) => {
     //
@@ -55,7 +56,7 @@ export const ModalAddCategoria = (props:ModalProps) => {
     let categoria: Categoria = {
       nome: nome,
       tipo: tipoCategoria,
-      icone: ""
+      icone: IconEnum.BOX
     }
 
     await createCategoria(categoria)

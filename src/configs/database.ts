@@ -3,6 +3,7 @@ import { TipoReceita } from "../model/tipoReceita"
 import { Transacao } from "../model/transacao"
 import { Conta } from "../model/conta"
 import { Categoria } from "../model/categoria"
+import { IconEnum } from "../model/iconEnum"
 
 SQLite.enablePromise(true)
 
@@ -81,9 +82,9 @@ export const initDB = async () => {
     // Categorias
     await db.executeSql("CREATE TABLE Categorias(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, tipo TEXT, icone TEXT)")
 
-    await createCategoria({nome: "Alimento", tipo: "despesa", icone: ""})
-    await createCategoria({nome: "Higiene", tipo: "despesa", icone: ""})
-    await createCategoria({nome: "Doação", tipo: "despesa", icone: ""})
+    await createCategoria({nome: "Alimento", tipo: "despesa", icone: IconEnum.BOX})
+    await createCategoria({nome: "Higiene", tipo: "despesa", icone: IconEnum.MENU})
+    await createCategoria({nome: "Doação", tipo: "despesa", icone: IconEnum.BOX})
 
     // Contas
     await db.executeSql("CREATE TABLE Contas(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, tipo TEXT)")

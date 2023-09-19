@@ -7,6 +7,7 @@ import { storeStateType } from "../../../redux"
 import { Transacao } from "../../../model/transacao"
 import { TipoReceita } from "../../../model/tipoReceita"
 import { Categoria } from "../../../model/categoria"
+import { IconEnum } from "../../../model/iconEnum"
 
 export const UltimosLancamentos = () => {
     //
@@ -26,13 +27,13 @@ export const UltimosLancamentos = () => {
     )
 
     //
-    const BoxIcon = (props: IconProps): React.ReactElement => (
-        <Icon {...props} name='menu' fill='black' style={{ width: 30, height: 30 }}></Icon>
-    )
+    const BoxIcon = ({props, category}:{props?:IconProps; category:IconEnum}): React.ReactElement => {
+        return <Icon {...props} name={category} fill='black' style={{ width: 30, height: 30 }}></Icon>
+    }
 
     //
     const renderItem = ({ item, index }: { item: Transacao, index: number }) => {
-        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoriaId) ?? {nome: "", tipo: "", icone: ""}
+        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoriaId) ?? {nome: "", tipo: "", icone: IconEnum.BOX}
 
         return <>
             <ListItem>
@@ -44,7 +45,7 @@ export const UltimosLancamentos = () => {
                             <Text style={{ fontWeight: 'bold' }}>{item.descricao}</Text>
                         </View>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                            <BoxIcon></BoxIcon>
+                            <BoxIcon category={categoria.icone}></BoxIcon>
                             <Text> {categoria.nome}</Text>
                         </View>
 

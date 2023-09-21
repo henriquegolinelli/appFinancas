@@ -1,3 +1,4 @@
+import { Categoria } from "../model/categoria"
 import { Conta } from "../model/conta"
 import { Transacao } from "../model/transacao"
 

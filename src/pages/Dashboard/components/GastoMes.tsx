@@ -118,5 +118,6 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 10,
         elevation: 10,
+        // marginBottom: 50
     },
 })

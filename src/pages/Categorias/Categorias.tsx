@@ -110,12 +110,12 @@ export const Categorias = ({ navigation }) => {
      */
     const headerCardDespesas = (props: ViewProps) => (
         <View {...props}>
-            <Text category="h5" style={{ textAlign: 'center' }}>Despesas</Text>
+            <Text category="h5" style={{ textAlign: 'center' }}>Despesa</Text>
         </View>
     )
     const headerCardReceitas = (props: ViewProps) => (
         <View {...props}>
-            <Text category="h5" style={{ textAlign: 'center' }}>Receitas</Text>
+            <Text category="h5" style={{ textAlign: 'center' }}>Receita</Text>
         </View>
     )
 

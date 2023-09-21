@@ -86,6 +86,8 @@ export const initDB = async () => {
     await createCategoria({nome: "Higiene", tipo: "despesa", icone: IconEnum.MENU})
     await createCategoria({nome: "Doação", tipo: "despesa", icone: IconEnum.BOX})
 
+    await createCategoria({nome: "Salário", tipo: 'receita', icone: IconEnum.ACTIVITY})
+
     // Contas
     await db.executeSql("CREATE TABLE Contas(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, tipo TEXT)")
 

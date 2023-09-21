@@ -1,4 +1,4 @@
-import {Modal, Card, Input, Text, Select, SelectItem, Button, IndexPath} from '@ui-kitten/components'
+import {Modal, Card, Input, Text, Select, SelectItem, Button, IndexPath, Icon, IconProps, IconElement} from '@ui-kitten/components'
 
 import { Styles as styles } from '../../../common/style/stylesheet';
 import { useState } from 'react';
@@ -13,6 +13,12 @@ export const ModalAddCategoria = (props:ModalProps) => {
     //
     let tipoEnum: string[] = []
 
+    let iconeEnum: string[] = []
+
+    for (let enumV in IconEnum) {
+      iconeEnum.push(enumV.toLowerCase())
+    }
+
     for (let enumV in TipoReceita) {
       tipoEnum.push(enumV.toUpperCase())
     }
@@ -25,12 +31,30 @@ export const ModalAddCategoria = (props:ModalProps) => {
     //
     const [inputNomeCategoria, setInputNomeCategoria] = useState<string>('')
     const [selectIndexTipo, setSelectIndexTipo] = useState<IndexPath>(new IndexPath(0))
+    const [selectIcone, setSelectIcone] = useState<IndexPath>(new IndexPath(0))
 
     const tiposDisplay = tipoEnum[selectIndexTipo.row]
 
+    const iconesDisplay = iconeEnum[selectIcone.row]
+
+    const RenderIconSelect = (iconName:string, props?:IconProps): IconElement => (
+      <Icon 
+        {...props}
+        name={iconName}
+      />
+    )
+
+    const RenderIconCube = (props:IconProps): IconElement => (
+      <Icon {...props} name='cube'/>
+    )
     
     const renderItemSelect = (title) => (
         <SelectItem title={title} key={title}/>
+    )
+
+    const renderIconsSelect = (iconName:string) => (
+      // <SelectItem title={iconName} key={iconName} accessoryLeft={RenderIconSelect(iconName)}/>
+      <SelectItem title={iconName} key={iconName} accessoryLeft={RenderIconCube}/>
     )
 
     const headerModalCardAdd = (props:ViewProps) => (
@@ -56,7 +80,7 @@ export const ModalAddCategoria = (props:ModalProps) => {
     let categoria: Categoria = {
       nome: nome,
       tipo: tipoCategoria,
-      icone: IconEnum.BOX
+      icone: IconEnum.ACTIVITY
     }
 
     await createCategoria(categoria)
@@ -88,6 +112,15 @@ export const ModalAddCategoria = (props:ModalProps) => {
           style={{ marginBottom: 10 }}
         >
           {tipoEnum.map(renderItemSelect)}
+        </Select>
+        <Text style={styles.label}>Ícone</Text>
+        <Select
+          selectedIndex={selectIcone}
+          onSelect={(i : IndexPath) => setSelectIcone(i)}
+          value={iconesDisplay}
+          style={{ marginBottom: 10 }}
+        >
+          {iconeEnum.map(renderIconsSelect)}
         </Select>
         <View
           style={{

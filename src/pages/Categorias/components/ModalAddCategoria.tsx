@@ -1,95 +1,112 @@
-import {Modal, Card, Input, Text, Select, SelectItem, Button, IndexPath, Icon, IconProps, IconElement} from '@ui-kitten/components'
+import {
+  Modal,
+  Card,
+  Input,
+  Text,
+  Select,
+  SelectItem,
+  Button,
+  IndexPath,
+  Icon,
+  IconProps,
+  IconElement,
+} from "@ui-kitten/components";
 
-import { Styles as styles } from '../../../common/style/stylesheet';
-import { useState } from 'react';
-import { ViewProps, View } from 'react-native';
-import { ModalProps } from '../model';
-import { TipoReceita } from '../../../model/tipoReceita';
-import { createCategoria } from '../../../configs/database';
-import { Categoria } from '../../../model/categoria';
-import { IconEnum } from '../../../model/iconEnum';
+import { Styles as styles } from "../../../common/style/stylesheet";
+import { useState } from "react";
+import { ViewProps, View } from "react-native";
+import { ModalProps } from "../model";
+import { TipoReceita } from "../../../model/tipoReceita";
+import { createCategoria } from "../../../configs/database";
+import { Categoria } from "../../../model/categoria";
+import { IconEnum } from "../../../model/iconEnum";
 
-export const ModalAddCategoria = (props:ModalProps) => {
-    //
-    let tipoEnum: string[] = []
+export const ModalAddCategoria = (props: ModalProps) => {
+  //
+  let tipoEnum: string[] = [];
 
-    let iconeEnum: string[] = []
+  let iconeEnum: string[] = [];
 
-    for (let enumV in IconEnum) {
-      iconeEnum.push(enumV.toLowerCase())
-    }
+  for (let enumV in IconEnum) {
+    iconeEnum.push(enumV.toLowerCase());
+  }
 
-    for (let enumV in TipoReceita) {
-      tipoEnum.push(enumV.toUpperCase())
-    }
+  for (let enumV in TipoReceita) {
+    tipoEnum.push(enumV.toUpperCase());
+  }
 
-    const isActive: boolean = props.open
-    const setModal = (isActive: boolean) => {
-        props.setOpen(isActive)
-    }
+  const isActive: boolean = props.open;
+  const setModal = (isActive: boolean) => {
+    props.setOpen(isActive);
+  };
 
-    //
-    const [inputNomeCategoria, setInputNomeCategoria] = useState<string>('')
-    const [selectIndexTipo, setSelectIndexTipo] = useState<IndexPath>(new IndexPath(0))
-    const [selectIcone, setSelectIcone] = useState<IndexPath>(new IndexPath(0))
+  //
+  const [inputNomeCategoria, setInputNomeCategoria] = useState<string>("");
+  const [selectIndexTipo, setSelectIndexTipo] = useState<IndexPath>(
+    new IndexPath(0)
+  );
+  const [selectIcone, setSelectIcone] = useState<IndexPath>(new IndexPath(0));
 
-    const tiposDisplay = tipoEnum[selectIndexTipo.row]
+  const tiposDisplay = tipoEnum[selectIndexTipo.row];
 
-    const iconesDisplay = iconeEnum[selectIcone.row]
+  const iconesDisplay = iconeEnum[selectIcone.row];
 
-    const RenderIconSelect = (iconName:string, props?:IconProps): IconElement => (
-      <Icon 
-        {...props}
-        name={iconName}
-      />
-    )
+  const RenderIconSelect = (
+    iconName: string,
+    props?: IconProps
+  ): IconElement => <Icon {...props} name={iconName} />;
 
-    const RenderIconCube = (props:IconProps): IconElement => (
-      <Icon {...props} name='cube'/>
-    )
-    
-    const renderItemSelect = (title) => (
-        <SelectItem title={title} key={title}/>
-    )
+  const RenderIconCube = (props: IconProps): IconElement => (
+    <Icon {...props} name={"BOX"} />
+  );
 
-    const renderIconsSelect = (iconName:string) => (
-      // <SelectItem title={iconName} key={iconName} accessoryLeft={RenderIconSelect(iconName)}/>
-      <SelectItem title={iconName} key={iconName} accessoryLeft={RenderIconCube}/>
-    )
+  const renderItemSelect = (title) => <SelectItem title={title} key={title} />;
 
-    const headerModalCardAdd = (props:ViewProps) => (
-        <View {...props}>
-            <Text category="h5" style={{textAlign: 'center'}}>Criar Categoria</Text>
-        </View>
-    )
+  const renderIconsSelect = (value: string, iconName: string) => (
+    <SelectItem
+      title={value}
+      key={value}
+      accessoryLeft={props => <Icon {...props} name={iconName}/>}
+    />
+    // <SelectItem title={iconName} key={iconName} accessoryLeft={RenderIconCube}/>
+  );
+
+  const headerModalCardAdd = (props: ViewProps) => (
+    <View {...props}>
+      <Text category="h5" style={{ textAlign: "center" }}>
+        Criar Categoria
+      </Text>
+    </View>
+  );
 
   //
   const handleAdd = async () => {
-    let nome: string = inputNomeCategoria
-    let tipo: string = tiposDisplay
-    let tipoCategoria: "despesa" | "receita"
+    let nome: string = inputNomeCategoria;
+    let tipo: string = tiposDisplay;
+    let tipoCategoria: "despesa" | "receita";
 
-    if (nome == "") return
+    if (nome == "") return;
 
-    if (tipo == "DESPESA") tipoCategoria = "despesa"
+    if (tipo == "DESPESA") tipoCategoria = "despesa";
 
-    if (tipo == "RECEITA") tipoCategoria = "receita"
+    if (tipo == "RECEITA") tipoCategoria = "receita";
 
-    if (!tipoCategoria) return
+    if (!tipoCategoria) return;
 
     let categoria: Categoria = {
       nome: nome,
       tipo: tipoCategoria,
-      icone: IconEnum.ACTIVITY
-    }
+      icone: IconEnum.ACTIVITY,
+    };
 
-    await createCategoria(categoria)
-    props.update()
+    await createCategoria(categoria);
+    props.update();
 
-    setInputNomeCategoria("")
-  }
-    
-  return <Modal
+    setInputNomeCategoria("");
+  };
+
+  return (
+    <Modal
       visible={isActive}
       backdropStyle={styles.backdrop}
       onBackdropPress={() => setModal(false)}
@@ -116,11 +133,16 @@ export const ModalAddCategoria = (props:ModalProps) => {
         <Text style={styles.label}>Ícone</Text>
         <Select
           selectedIndex={selectIcone}
-          onSelect={(i : IndexPath) => setSelectIcone(i)}
+          onSelect={(i: IndexPath) => setSelectIcone(i)}
           value={iconesDisplay}
           style={{ marginBottom: 10 }}
         >
-          {iconeEnum.map(renderIconsSelect)}
+          {/* {iconeEnum.map((item, index) => {
+              console.log(`Icone ${index+1}: ${iconeEnum[index]}, tipo: ${typeof iconeEnum[index]}`)
+              return renderIconsSelect(item, IconEnum.ACTIVITY) 
+            })
+          } */}
+          {Object.values(IconEnum).map((iconName, index)=> renderIconsSelect(iconName, iconName))}
         </Select>
         <View
           style={{
@@ -138,10 +160,17 @@ export const ModalAddCategoria = (props:ModalProps) => {
           >
             Cancelar
           </Button>
-          <Button status="success" style={{ width: "45%" }} onPress={async () => {await handleAdd()}}>
+          <Button
+            status="success"
+            style={{ width: "45%" }}
+            onPress={async () => {
+              await handleAdd();
+            }}
+          >
             Cadastrar
           </Button>
         </View>
       </Card>
     </Modal>
+  );
 };

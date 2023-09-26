@@ -10,6 +10,7 @@ import { Transacao } from "../model/transacao"
 export abstract class StateType {
     transacoes: Transacao[]
     tempTransacoes: Transacao[]
+    contaTransacoes: Transacao[]
     categorias: Categoria[]
     count: number
     contas: Conta[]

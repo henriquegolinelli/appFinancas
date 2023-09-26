@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { storeStateType } from "../../redux"
 import { Transacao } from "../../model/transacao"
 import { ModalDelete } from "../../components/ModalDelete/ModalDelete"
-import { getTransacaoByDate, getTransacoes } from "../../redux/Redux.store"
+import { getTransacaoByConta, getTransacaoByDate, getTransacoes } from "../../redux/Redux.store"
 import { isDateEqual, toDateString } from "../../common/util/dateUtils"
 
 const MenuIcon = (props: IconProps): IconElement => (
@@ -50,6 +50,7 @@ export const FluxoCaixaView = ({ navigation }) => {
     */
     const updateFluxoCaixa = (inicio: string, fim: string) => {
         dispatch(getTransacaoByDate({ inicio: inicio, fim: fim }));
+        dispatch(getTransacaoByConta({contaId: 0}))
         dispatch(getTransacoes());
     }
 

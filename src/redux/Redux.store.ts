@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getDBCategorias, getDBContas, getDBTransacoes, getDBTransacoesByDate } from "../configs/database";
+import { getDBCategorias, getDBContas, getDBTransacoes, getDBTransacoesByConta, getDBTransacoesByDate } from "../configs/database";
 import { Transacao } from "../model/transacao";
 import { StateType } from "./Redux.model";
 import { Conta } from "../model/conta";
@@ -9,6 +9,7 @@ const INIT_STATE: StateType = {
     count: 0,
     transacoes: [],
     tempTransacoes: [],
+    contaTransacoes: [],
     categorias: [],
     contas: []
 }
@@ -42,6 +43,9 @@ const stock = createSlice({
             }),
             builder.addCase(getTransacaoByDate.fulfilled, (state, action) => {
                 state.tempTransacoes = action.payload
+            }),
+            builder.addCase(getTransacaoByConta.fulfilled, (state, action) => {
+                state.contaTransacoes = action.payload
             })
     }
 })
@@ -64,6 +68,21 @@ export const getTransacaoByDate = createAsyncThunk(
             transacoes = await getDBTransacoes()
         } else {
             transacoes = await getDBTransacoesByDate({ inicio: inicio, fim: fim })
+        }
+
+        return transacoes
+    }
+)
+
+export const getTransacaoByConta = createAsyncThunk(
+    "teste/getTransacaoByConta",
+    async ({contaId} : {contaId: number}) => {
+        let transacoes: Transacao[] = []
+
+        if (contaId === -1) {
+            transacoes = await getDBTransacoes()
+        } else {
+            transacoes = await getDBTransacoesByConta(contaId)
         }
 
         return transacoes

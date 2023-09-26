@@ -30,7 +30,7 @@ import { storeStateType } from "../../redux";
 import { useDispatch, useSelector } from "react-redux";
 import { Transacao } from "../../model/transacao";
 import { Conta } from "../../model/conta";
-import { getContas, getTransacaoByDate, getTransacoes } from "../../redux/Redux.store";
+import { getContas, getTransacaoByConta, getTransacaoByDate, getTransacoes } from "../../redux/Redux.store";
 import { TipoReceita } from "../../model/tipoReceita";
 import { ModalDelete } from "../../components/ModalDelete/ModalDelete";
 
@@ -98,6 +98,7 @@ export const ContasView = ({ navigation }) => {
     dispatch(getContas());
     dispatch(getTransacoes());
     dispatch(getTransacaoByDate({ inicio: "0", fim: "0" }))
+    dispatch(getTransacaoByConta({contaId: 0}))
   };
 
   /**

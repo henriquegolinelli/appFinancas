@@ -47,6 +47,22 @@ export const getDBTransacoesByDate = async ({inicio, fim}: {inicio: string, fim:
     return transacoes
 }
 
+export const getDBTransacoesByConta = async (contaId: number): Promise<Transacao[]> => {
+    let transacoes: Transacao[] = []
+
+    let db = await getDB()
+
+    let result: SQLite.ResultSet = (await db.executeSql("SELECT * FROM Transacoes WHERE contaId = ?", [contaId]))[0]
+
+    for (let i = 0; i < result.rows.length; i++) {
+        let item = result.rows.item(i)
+
+        transacoes.push(item as Transacao)
+    }
+
+    return transacoes
+}
+
 export const getDBCategorias = async (): Promise<Categoria[]> => {
     let categorias: Categoria[] = []
 

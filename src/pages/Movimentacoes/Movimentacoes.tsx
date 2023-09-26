@@ -20,10 +20,11 @@ import { Tabela } from "../../components/Tabela/Tabela";
 
 import { Styles as styles } from "../../common/style/stylesheet";
 import { FormMovimentacoes } from "./components/FormMovimentacoes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { storeStateType } from "../../redux";
 import { Transacao } from "../../model/transacao";
 import { Conta } from "../../model/conta";
+import { getTransacaoByConta } from "../../redux/Redux.store";
 
 const MenuIcon = (props: IconProps): IconElement => (
   <Icon {...props} name="menu" />
@@ -41,7 +42,10 @@ const BackIcon = (props: IconProps): IconElement => (
 
 export const Movimentacoes = ({ navigation }) => {
   const stock = useSelector((state: storeStateType) => state.stock);
-  let transacao: Transacao[] = stock.transacoes;
+
+  const dispatch = useDispatch<any>()
+
+  let transacaoContas: Transacao[] = stock.contaTransacoes
   let contas: Conta[] = stock.contas;
 
   /**
@@ -49,15 +53,13 @@ export const Movimentacoes = ({ navigation }) => {
    */
   const [selectConta, setSelectConta] = useState<IndexPath>(new IndexPath(0));
 
-  const [valoresTransacaoContas, setValoresTransacaoContas] = useState([])
-
   /**
    * Funções
    */
   const contaSelecionada = contas[selectConta.row];
 
   const handleConsulta = () => {
-    setValoresTransacaoContas(transacao.filter(t => t.contaId == contaSelecionada.id))
+    dispatch(getTransacaoByConta({contaId: contaSelecionada ? contaSelecionada.id ?? 0 : 0}))
   };
 
   /**
@@ -116,7 +118,7 @@ export const Movimentacoes = ({ navigation }) => {
             <Layout style={[styles.container, { width: "100%" }]}>
               <Card style={styles.card} header={headerCardMovimentacoes}>
                 {/* Tabela de Movimentações */}
-                <Tabela data={valoresTransacaoContas} hasDelete={false}/>
+                <Tabela data={transacaoContas} hasDelete={false}/>
               </Card>
             </Layout>
           </ScrollView>

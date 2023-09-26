@@ -49,7 +49,7 @@ export const ModalTranferencia = (props: PropsModal) => {
         let total = 0
 
         // Get transações da conta selecionada
-        const transacoes: Transacao[] = transacoesGeral.filter(item => conta.id == item.contaId);
+        const transacoes: Transacao[] = conta ? transacoesGeral.filter(item => conta.id == item.contaId) : [];
 
         // soma o total das transações
         transacoes.forEach(item => total += item.valor)
@@ -81,13 +81,13 @@ export const ModalTranferencia = (props: PropsModal) => {
         <Select selectedIndex={selectContaOrigem} onSelect={(index: IndexPath) => setSelectContaOrigem(index)} value={`${displayValueContaOrigem ? displayValueContaOrigem.nome: 'Adicione uma conta...'} (${displayValueContaOrigem ? displayValueContaOrigem.tipo : 'Carregando...'})`}>
             {contasGeral.map(item => renderOptionsContas(`${item.nome} (${item.tipo})`))}
         </Select>
-        <Text style={{color: 'gray'}}>{`Saldo: R$ ${getSaldoContaByIndex(selectContaOrigem.row).toLocaleString('pt-br', {minimumFractionDigits: 2})}`}</Text>
+        <Text style={{marginTop: 3}} status={getSaldoContaByIndex(selectContaOrigem.row) > 0 ? 'success' : 'danger'}>{`Saldo: R$ ${getSaldoContaByIndex(selectContaOrigem.row).toLocaleString('pt-br', {minimumFractionDigits: 2})}`}</Text>
 
         <Text style={styles.labelForm}>Conta Destino</Text>
         <Select selectedIndex={selectContaDestino} onSelect={(index: IndexPath) => setSelectContaDestino(index)} value={`${displayValueContaDestino ? displayValueContaDestino.nome: 'Adicione uma conta...'} (${displayValueContaDestino ? displayValueContaDestino.tipo : 'Carregando...'})`}>
             {contasGeral.map(item => renderOptionsContas(`${item.nome} (${item.tipo})`))}
         </Select>
-        <Text style={{color: 'gray'}}>{`Saldo: R$ ${getSaldoContaByIndex(selectContaDestino.row).toLocaleString('pt-br', {minimumFractionDigits: 2})}`}</Text>
+        <Text style={{marginTop: 3}} status={getSaldoContaByIndex(selectContaDestino.row) >= 0 ? 'success' : 'danger'}>{`Saldo: R$ ${getSaldoContaByIndex(selectContaDestino.row).toLocaleString('pt-br', {minimumFractionDigits: 2})}`}</Text>
 
         <Divider style={styles.divider} />
 

@@ -17,7 +17,7 @@ export const ModalAddConta = (props:ModalAddContaProps) => {
 
     const [nomeConta, setNomeConta] = useState<string>('')
     const [tipoConta, setTipoConta] = useState<string>('')
-    const [saldoConta, setSaldoConta] = useState<number>(0)
+    // const [saldoConta, setSaldoConta] = useState<number>(0)
 
     const headerModalCardAdd = (props:ViewProps) => (
         <View {...props}>
@@ -28,7 +28,7 @@ export const ModalAddConta = (props:ModalAddContaProps) => {
     const handleAdd = async () => {
         let nome: string = nomeConta
         let tipo: string = tipoConta
-        let saldo: number = saldoConta
+        // let saldo: number = saldoConta
 
         if (nome == "") return
         if (tipo == "") return
@@ -40,7 +40,7 @@ export const ModalAddConta = (props:ModalAddContaProps) => {
 
         setNomeConta("")
         setTipoConta("")
-        setSaldoConta(0)
+        // setSaldoConta(0)
     }
 
     return <Modal backdropStyle={styles.backdrop} visible={isActive} onBackdropPress={()=>setModal(false)} style={{width: '85%'}}>
@@ -52,9 +52,9 @@ export const ModalAddConta = (props:ModalAddContaProps) => {
         <Input placeholder="Ex.: Corrente" value={tipoConta} onChangeText={text => setTipoConta(text)} style={{marginBottom: 10}}/>
         
 
-        <Text style={styles.label}>Saldo</Text>
+        {/* <Text style={styles.label}>Saldo</Text> */}
         {/* <Input placeholder="Ex.: 10000" value={saldoConta.toFixed(2)} onChangeText={(text) => setSaldoConta(parseFloat(text))} keyboardType="numeric"/> */}
-        <CurrencyInput style={{marginBottom: 10}} value={saldoConta} onChangeValue={setSaldoConta} prefix="R$" delimiter="." separator="," precision={2} minValue={0} placeholder="Ex.: 10.000,00" renderTextInput={textInputProps => <Input {...textInputProps}></Input>}/>
+        {/* <CurrencyInput style={{marginBottom: 10}} value={saldoConta} onChangeValue={setSaldoConta} prefix="R$" delimiter="." separator="," precision={2} minValue={0} placeholder="Ex.: 10.000,00" renderTextInput={textInputProps => <Input {...textInputProps}></Input>}/> */}
         
         <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
             <Button status="danger" style={{width: '45%'}} onPress={()=>{setModal(false)}}>Cancelar</Button>

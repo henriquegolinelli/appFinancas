@@ -12,6 +12,7 @@ import { TipoReceita } from "../../../model/tipoReceita";
 import { toDateString } from "../../../common/util/dateUtils";
 import { getContaText } from "../../../common/util/dbUtils";
 import { Categoria } from "../../../model/categoria";
+import CurrencyInput from "react-native-currency-input";
 
 export const ModalReceitaDespesa = (props: PropsModal) => {
     //
@@ -48,7 +49,7 @@ export const ModalReceitaDespesa = (props: PropsModal) => {
      * States do formulario Add Receita
      */
     const [dateReceita, setDateReceita] = useState<Date>(new Date())
-    const [inputValorReceita, setInputValorReceita] = useState<string>("")
+    const [inputValorReceita, setInputValorReceita] = useState<number>()
     const [selectCategoriaReceita, setSelectCategoriaReceita] = useState<IndexPath>(new IndexPath(0))
     const [selectCategoriaDespesa, setSelectCategoriaDespesa] = useState<IndexPath>(new IndexPath(0))
     const [selectContaReceita, setSelectContaReceita] = useState<IndexPath>(new IndexPath(0))
@@ -118,7 +119,7 @@ export const ModalReceitaDespesa = (props: PropsModal) => {
             props.update()
 
             setInputObsReceita("")
-            setInputValorReceita("")
+            setInputValorReceita(null)
         }
 
         if (selectTipoTransacao.row == 1) { // Despesa
@@ -148,7 +149,7 @@ export const ModalReceitaDespesa = (props: PropsModal) => {
             props.update()
 
             setInputObsReceita("")
-            setInputValorReceita("")
+            setInputValorReceita(null)
         }
         
     }
@@ -169,7 +170,8 @@ export const ModalReceitaDespesa = (props: PropsModal) => {
         <Datepicker date={dateReceita} onSelect={nextDate => setDateReceita(nextDate)}></Datepicker>
 
         <Text style={styles.labelForm}>Valor (R$)</Text>
-        <Input placeholder='Ex.: 450.95' value={inputValorReceita} onChangeText={text => setInputValorReceita(text)} keyboardType='numeric'></Input>
+        {/* <Input placeholder='Ex.: 450.95' value={inputValorReceita} onChangeText={text => setInputValorReceita(text)} keyboardType='numeric'></Input> */}
+        <CurrencyInput style={{marginBottom: 10}} value={inputValorReceita} onChangeValue={setInputValorReceita} prefix="R$" delimiter="." separator="," precision={2} minValue={0} placeholder="Ex.: 50,00" renderTextInput={textInputProps => <Input {...textInputProps}></Input>}/>
 
         <Text style={styles.labelForm}>Categoria</Text>
         {selectTipoTransacao.row == 0 ? <SelectCategoriaReceita/> : <SelectCategoriaDespesa/>}

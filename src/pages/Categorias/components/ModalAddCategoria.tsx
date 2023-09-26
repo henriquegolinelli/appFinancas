@@ -51,25 +51,31 @@ export const ModalAddCategoria = (props: ModalProps) => {
 
   const iconesDisplay = iconeEnum[selectIcone.row];
 
+  let iconNames: string[] = Object.values(IconEnum).map(iconName=>iconName);
+
   const RenderIconSelect = (
     iconName: string,
     props?: IconProps
   ): IconElement => <Icon {...props} name={iconName} />;
 
   const RenderIconCube = (props: IconProps): IconElement => (
-    <Icon {...props} name={"BOX"} />
+    <Icon {...props} name={"cube"} />
   );
 
   const renderItemSelect = (title) => <SelectItem title={title} key={title} />;
 
   const renderIconsSelect = (value: string, iconName: string) => (
     <SelectItem
-      title={value}
+      title={value.toUpperCase()}
       key={value}
       accessoryLeft={props => <Icon {...props} name={iconName}/>}
     />
     // <SelectItem title={iconName} key={iconName} accessoryLeft={RenderIconCube}/>
   );
+
+  const renderIconSelected = (props: IconProps): IconElement => (
+    <Icon {...props} name={iconNames[selectIcone.row]}/>
+  )
 
   const headerModalCardAdd = (props: ViewProps) => (
     <View {...props}>
@@ -84,6 +90,7 @@ export const ModalAddCategoria = (props: ModalProps) => {
     let nome: string = inputNomeCategoria;
     let tipo: string = tiposDisplay;
     let tipoCategoria: "despesa" | "receita";
+    let iconeNome: string = iconNames[selectIcone.row]
 
     if (nome == "") return;
 
@@ -96,7 +103,7 @@ export const ModalAddCategoria = (props: ModalProps) => {
     let categoria: Categoria = {
       nome: nome,
       tipo: tipoCategoria,
-      icone: IconEnum.ACTIVITY,
+      icone: IconEnum[Object.keys(IconEnum)[selectIcone.row]], // TODO
     };
 
     await createCategoria(categoria);
@@ -133,15 +140,11 @@ export const ModalAddCategoria = (props: ModalProps) => {
         <Text style={styles.label}>Ícone</Text>
         <Select
           selectedIndex={selectIcone}
+          accessoryLeft={renderIconSelected}
           onSelect={(i: IndexPath) => setSelectIcone(i)}
           value={iconesDisplay}
           style={{ marginBottom: 10 }}
         >
-          {/* {iconeEnum.map((item, index) => {
-              console.log(`Icone ${index+1}: ${iconeEnum[index]}, tipo: ${typeof iconeEnum[index]}`)
-              return renderIconsSelect(item, IconEnum.ACTIVITY) 
-            })
-          } */}
           {Object.values(IconEnum).map((iconName, index)=> renderIconsSelect(iconName, iconName))}
         </Select>
         <View

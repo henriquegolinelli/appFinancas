@@ -50,6 +50,7 @@ export const FluxoCaixaView = ({ navigation }) => {
     */
     const updateFluxoCaixa = (inicio: string, fim: string) => {
         dispatch(getTransacaoByDate({ inicio: inicio, fim: fim }));
+        dispatch(getTransacoes());
     }
 
     /**

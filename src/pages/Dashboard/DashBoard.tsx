@@ -35,8 +35,6 @@ export const DashBoard = ({ navigation }: any) => {
   const dispatch = useDispatch<any>();
 
   useEffect(() => {
-    console.log("teste");
-
     init();
   }, []);
 

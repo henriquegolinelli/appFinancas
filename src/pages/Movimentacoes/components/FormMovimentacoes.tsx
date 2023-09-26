@@ -21,8 +21,6 @@ export const FormMovimentacoes = (props:FormSetContaProps) => {
   const stock = useSelector((state: storeStateType) => state.stock);
   let contas: Conta[] = stock.contas;
 
-  
-
   /**
    * Funções
    */
@@ -32,7 +30,7 @@ export const FormMovimentacoes = (props:FormSetContaProps) => {
    * Renders
    */
   const renderSelectOptionsContas = (conta: Conta) => (
-    <SelectItem title={conta.nome + " (" + conta.tipo + ")"} key={conta.id} />
+    <SelectItem title={conta.nome ?? "" + " (" + conta.tipo ?? "" + ")"} key={conta.id ?? 0} />
   );
 
   return (
@@ -43,7 +41,7 @@ export const FormMovimentacoes = (props:FormSetContaProps) => {
       <Select
         selectedIndex={props.conta}
         onSelect={(index: IndexPath) => props.setConta(index)}
-        value={displayValueContas.nome + " (" + displayValueContas.tipo + ")"}
+        value={displayValueContas ? displayValueContas.nome + " (" + displayValueContas.tipo + ")" : "Adicione uma Conta"}
       >
         {contas.map(renderSelectOptionsContas)}
       </Select>

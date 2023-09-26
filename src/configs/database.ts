@@ -133,6 +133,7 @@ export const createConta = async (conta: Conta) => {
 export const deleteConta = async (id: number) => {
     let db = await getDB();
 
+    await db.executeSql("DELETE FROM Transacoes WHERE contaId = ?", [id])
     await db.executeSql("DELETE FROM Contas WHERE id = ?", [id])
 }
 

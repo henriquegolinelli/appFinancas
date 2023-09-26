@@ -28,8 +28,14 @@ export const ModalAddCategoria = (props: ModalProps) => {
   let iconeEnum: string[] = [];
 
   for (let enumV in IconEnum) {
-    iconeEnum.push(enumV.toLowerCase());
+    
+    let valueEnum: string = IconEnum[enumV]
+
+    iconeEnum.push(valueEnum.toUpperCase())
   }
+
+  // console.log(iconeEnum)
+  // console.log(IconEnum['BOX'])
 
   for (let enumV in TipoReceita) {
     tipoEnum.push(enumV.toUpperCase());

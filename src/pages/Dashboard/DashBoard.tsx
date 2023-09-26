@@ -10,7 +10,6 @@ import {
   TopNavigationAction,
   Text,
   Button,
-  Popover,
 } from "@ui-kitten/components";
 import { SaldoTotal } from "./components/SaldoTotal";
 import { useEffect, useState } from "react";
@@ -24,9 +23,7 @@ import {
 import { useDispatch } from "react-redux";
 import { UltimosLancamentos } from "./components/UltimosLancamentos";
 import { GastoMes } from "./components/GastoMes";
-import { ModalDespesa } from "./components/ModalDespesas";
 import { ModalTranferencia } from "./components/ModalTransferencia";
-import { ModalReceita } from "./components/ModalReceita";
 import { ModalReceitaDespesa } from "./components/ModalReceitaDespesa";
 
 export const DashBoard = ({ navigation }: any) => {
@@ -64,8 +61,6 @@ export const DashBoard = ({ navigation }: any) => {
   //   useState<boolean>(false);
   const [visibleModalAddDespesaReceita, setVisibleModalAddDespesaReceita] = useState<boolean>(false);
 
-  const [visiblePopover, setVisiblePopover] = useState<boolean>(false);
-
   // Botão Superior Menu
   const renderDrawerAction = () => (
     <TopNavigationAction
@@ -84,22 +79,7 @@ export const DashBoard = ({ navigation }: any) => {
   /**
    * Renders
    */
-  const renderPopoverMenu = () => (
-    <Button
-      onPress={() => {
-        setVisiblePopover(true);
-      }}
-      style={{
-        borderRadius: 10,
-        padding: 5,
-        elevation: 10,
-        width: "33%",
-      }}
-      status="success"
-    >
-      Adicionar
-    </Button>
-  );
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#2f9e41" }}>

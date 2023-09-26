@@ -3,27 +3,20 @@ import { useState } from "react";
 import { View, ViewProps } from "react-native"
 import { StyleSheet } from "react-native"
 import { PropsModal } from "../model";
-
-/**
- * Categorias
- */
-const dataSelectCategoria = [
-    'Alimentação',
-    'Cuidados Pessoais',
-    'Transporte',
-    'Viagem',
-    'Lazer'
-]
-
-/**
- * Contas
- */
-const dataSelectContas = [
-    'Principal (Corrente)',
-    'Secundária (Poupança)'
-]
+import { Conta } from "../../../model/conta";
+import { useSelector } from "react-redux";
+import { storeStateType } from "../../../redux";
+import CurrencyInput from "react-native-currency-input";
+import { Transacao } from "../../../model/transacao";
+import { getContaText, getTransacoesbyConta } from "../../../common/util/dbUtils";
 
 export const ModalTranferencia = (props: PropsModal) => {
+
+    const stock = useSelector((state: storeStateType) => state.stock)
+
+    const contasGeral: Conta[] = stock.contas
+    const transacoesGeral: Transacao[] = stock.transacoes
+
     // Props
     const isActive: boolean = props.isModal
     const setModal = (isActive: boolean) => {
@@ -41,9 +34,27 @@ export const ModalTranferencia = (props: PropsModal) => {
      * States do formulario Fazer Transferencia
      */
     const [dateTransf, setDateTransf] = useState<Date>(new Date())
-    const [inputValorTransf, setInputValorTransf] = useState<string>("")
+    const [inputValorTransf, setInputValorTransf] = useState<number>()
     const [selectContaOrigem, setSelectContaOrigem] = useState<IndexPath>(new IndexPath(0))
     const [selectContaDestino, setSelectContaDestino] = useState<IndexPath>(new IndexPath(0))
+
+    const [saldoContas, setSaldoContas] = useState<number[]>()
+
+
+    /**
+     * Funções
+     */
+    const getSaldoContaByIndex = (index: number) => {
+        const conta = contasGeral[index]
+        let total = 0
+
+        // Get transações da conta selecionada
+        // const transacoes: Transacao[] = transacoesGeral.
+
+        // soma o total das transações
+        // transacoes
+
+    }
 
     // Select Options Contas
     const renderOptionsContas = (title) => (
@@ -51,8 +62,8 @@ export const ModalTranferencia = (props: PropsModal) => {
     )
 
     //
-    const displayValueContaOrigem = dataSelectContas[selectContaOrigem.row];
-    const displayValueContaDestino = dataSelectContas[selectContaDestino.row];
+    const displayValueContaOrigem = contasGeral[selectContaOrigem.row];
+    const displayValueContaDestino = contasGeral[selectContaDestino.row];
 
     return <Modal visible={isActive} backdropStyle={styles.backdrop} onBackdropPress={() => setModal(false)} style={{ width: '85%' }}>
     <Card header={headerCardModalTransferencia}>
@@ -60,17 +71,21 @@ export const ModalTranferencia = (props: PropsModal) => {
         <Datepicker date={dateTransf} onSelect={nextDate => setDateTransf(nextDate)}></Datepicker>
 
         <Text style={styles.labelForm}>Valor (R$)</Text>
-        <Input placeholder='Ex.: 450.95' value={inputValorTransf} onChangeText={text => setInputValorTransf(text)} keyboardType='numeric'></Input>
+        {/* <Input placeholder='Ex.: 450.95' value={inputValorTransf} onChangeText={text => setInputValorTransf(text)} keyboardType='numeric'></Input> */}
+        <CurrencyInput style={{marginBottom: 10}} value={inputValorTransf} onChangeValue={setInputValorTransf} prefix="R$" delimiter="." separator="," precision={2} minValue={0} placeholder="Ex.: 50,00" renderTextInput={textInputProps => <Input {...textInputProps}></Input>}/>
+
 
         <Text style={styles.labelForm}>Conta Origem</Text>
-        <Select selectedIndex={selectContaOrigem} onSelect={(index: IndexPath) => setSelectContaOrigem(index)} value={displayValueContaOrigem}>
-            {dataSelectContas.map(renderOptionsContas)}
+        <Select selectedIndex={selectContaOrigem} onSelect={(index: IndexPath) => setSelectContaOrigem(index)} value={`${displayValueContaOrigem ? displayValueContaOrigem.nome: 'Adicione uma conta...'} (${displayValueContaOrigem ? displayValueContaOrigem.tipo : 'Carregando...'})`}>
+            {contasGeral.map(item => renderOptionsContas(`${item.nome} (${item.tipo})`))}
         </Select>
+        <Text style={{color: 'gray'}}>{`Saldo: R$ ${0}`}</Text>
 
         <Text style={styles.labelForm}>Conta Destino</Text>
-        <Select selectedIndex={selectContaDestino} onSelect={(index: IndexPath) => setSelectContaDestino(index)} value={displayValueContaDestino}>
-            {dataSelectContas.map(renderOptionsContas)}
+        <Select selectedIndex={selectContaDestino} onSelect={(index: IndexPath) => setSelectContaDestino(index)} value={`${displayValueContaDestino ? displayValueContaDestino.nome: 'Adicione uma conta...'} (${displayValueContaDestino ? displayValueContaDestino.tipo : 'Carregando...'})`}>
+            {contasGeral.map(item => renderOptionsContas(`${item.nome} (${item.tipo})`))}
         </Select>
+        <Text style={{color: 'gray'}}>{`Saldo: R$ ${10}`}</Text>
 
         <Divider style={styles.divider} />
 

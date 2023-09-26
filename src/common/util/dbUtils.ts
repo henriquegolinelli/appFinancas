@@ -36,7 +36,7 @@ export const getTransacoesbyConta = (transacoes: Transacao[], contas: Conta[]): 
 }
 
 export const getContaText = (conta: Conta): string => {
-    let text: string = conta.nome + " (" + conta.tipo + ")"
+    let text: string = conta.id > 0 ? conta.nome + " (" + conta.tipo + ")" : "Adicione uma Conta"
 
     return text
 }

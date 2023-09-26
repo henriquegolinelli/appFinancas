@@ -106,6 +106,10 @@ export const ModalReceitaDespesa = (props: PropsModal) => {
             let date: string = toDateString(dateReceita)
 
             //
+            if (categoriaDespesaSelecionada.id === undefined || categoriaDespesaSelecionada.id <= 0) return
+            if (contaSelecionada.id === undefined || contaSelecionada.id <= 0) return
+
+            //
             let transacao: Transacao = {
                 descricao: obs,
                 valor: valor,
@@ -134,6 +138,10 @@ export const ModalReceitaDespesa = (props: PropsModal) => {
 
             //
             let date: string = toDateString(dateReceita)
+
+            //
+            if (categoriaDespesaSelecionada.id === undefined || categoriaDespesaSelecionada.id <= 0) return
+            if (contaSelecionada.id === undefined || contaSelecionada.id <= 0) return
 
             //
             let transacao: Transacao = {

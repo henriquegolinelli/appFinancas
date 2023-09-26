@@ -17,6 +17,7 @@ import { initDB } from "../../configs/database";
 import {
   getCategorias,
   getContas,
+  getTransacaoByDate,
   getTransacoes,
 } from "../../redux/Redux.store";
 import { useDispatch } from "react-redux";
@@ -43,6 +44,7 @@ export const DashBoard = ({ navigation }: any) => {
     await initDB();
 
     dispatch(getTransacoes());
+    dispatch(getTransacaoByDate({inicio: "0", fim: "0"}));
     dispatch(getCategorias());
     dispatch(getContas());
   };

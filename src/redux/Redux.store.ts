@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getDBCategorias, getDBContas, getDBTransacoes } from "../configs/database";
+import { getDBCategorias, getDBContas, getDBTransacoes, getDBTransacoesByDate } from "../configs/database";
 import { Transacao } from "../model/transacao";
 import { StateType } from "./Redux.model";
 import { Conta } from "../model/conta";
+import { Categoria } from "../model/categoria";
 
 const INIT_STATE: StateType = {
     count: 0,
     transacoes: [],
+    tempTransacoes: [],
     categorias: [],
     contas: []
 }
@@ -32,12 +34,15 @@ const stock = createSlice({
         builder.addCase(getTransacoes.fulfilled, (state, action) => {
             state.transacoes = action.payload
         }),
-        builder.addCase(getCategorias.fulfilled, (state, action) => {
-            state.categorias = action.payload
-        }),
-        builder.addCase(getContas.fulfilled, (state, action) => {
-            state.contas = action.payload
-        })
+            builder.addCase(getCategorias.fulfilled, (state, action) => {
+                state.categorias = action.payload
+            }),
+            builder.addCase(getContas.fulfilled, (state, action) => {
+                state.contas = action.payload
+            }),
+            builder.addCase(getTransacaoByDate.fulfilled, (state, action) => {
+                state.tempTransacoes = action.payload
+            })
     }
 })
 
@@ -45,6 +50,23 @@ export const getTransacoes = createAsyncThunk(
     "teste/getTransacoes",
     async (thunkAPI) => {
         const transacoes: Transacao[] = await getDBTransacoes()
+
+        return transacoes
+    }
+)
+
+export const getTransacaoByDate = createAsyncThunk(
+    "teste/getTransacaoByDate",
+    async ({ inicio, fim }: { inicio: string, fim: string }) => {
+        let transacoes: Transacao[] = []
+
+        if (inicio === "0" && fim === "0") {
+            transacoes = await getDBTransacoes()
+        } else {
+            transacoes = await getDBTransacoesByDate({ inicio: inicio, fim: fim })
+        }
+
+        console.log(transacoes)
 
         return transacoes
     }

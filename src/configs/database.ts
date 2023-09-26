@@ -31,6 +31,22 @@ export const getDBTransacoes = async (): Promise<Transacao[]> => {
     return transacoes
 }
 
+export const getDBTransacoesByDate = async ({inicio, fim}: {inicio: string, fim: string}): Promise<Transacao[]> => {
+    let transacoes: Transacao[] = []
+
+    let db = await getDB()
+
+    let result: SQLite.ResultSet = (await db.executeSql("SELECT * FROM Transacoes WHERE data BETWEEN ? AND ?", [inicio, fim]))[0]
+
+    for (let i = 0; i < result.rows.length; i++) {
+        let item = result.rows.item(i)
+
+        transacoes.push(item as Transacao)
+    }
+
+    return transacoes
+}
+
 export const getDBCategorias = async (): Promise<Categoria[]> => {
     let categorias: Categoria[] = []
 

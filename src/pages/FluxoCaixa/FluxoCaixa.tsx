@@ -9,14 +9,15 @@ import { useDispatch, useSelector } from "react-redux"
 import { storeStateType } from "../../redux"
 import { Transacao } from "../../model/transacao"
 import { ModalDelete } from "../../components/ModalDelete/ModalDelete"
-import { getTransacoes } from "../../redux/Redux.store"
+import { getTransacaoByDate, getTransacoes } from "../../redux/Redux.store"
+import { toDateString } from "../../common/util/dateUtils"
 
-const MenuIcon = (props:IconProps): IconElement => (
+const MenuIcon = (props: IconProps): IconElement => (
     <Icon {...props} name='menu' />
 )
 
-const BackIcon = (props:IconProps): IconElement => (
-    <Icon {...props} name="arrow-back"/>
+const BackIcon = (props: IconProps): IconElement => (
+    <Icon {...props} name="arrow-back" />
 )
 
 // const data = [
@@ -25,60 +26,69 @@ const BackIcon = (props:IconProps): IconElement => (
 //     {data: '05/12/2022', categoria: 'Empréstimo', valor: 600.00, tipo: 'R'},
 // ]
 
-export const FluxoCaixaView = ({navigation}) => {
+export const FluxoCaixaView = ({ navigation }) => {
+
+    /**
+    * States do formulário
+    */
+    const [dateInicio, setDateInicio] = useState<Date>(new Date())
+    const [dateFinal, setDateFinal] = useState<Date>(new Date())
 
     const stock = useSelector((state: storeStateType) => state.stock);
 
-    let transacao: Transacao[] = stock.transacoes;
+    let transacao: Transacao[] = stock.tempTransacoes;
 
     const dispatch = useDispatch<any>()
 
     /*
     *  States
     */
-    
+
 
     /*
     *  Funções
     */
-    const updateFluxoCaixa = () => {
-        dispatch(getTransacoes());
+    const updateFluxoCaixa = (inicio: string, fim: string) => {
+        dispatch(getTransacaoByDate({ inicio: inicio, fim: fim }));
     }
 
     /**
      * Renders
      */
     const renderDrawerAction = () => (
-        <TopNavigationAction icon={MenuIcon} onPress={()=>{navigation.openDrawer()}}/>
+        <TopNavigationAction icon={MenuIcon} onPress={() => { navigation.openDrawer() }} />
     )
     const renderBackAction = () => (
-        <TopNavigationAction icon={BackIcon} onPress={()=>{navigation.goBack()}}/>
+        <TopNavigationAction icon={BackIcon} onPress={() => { navigation.goBack() }} />
     )
 
 
     /**
      * Card header / footer
      */
-    const headerCardLancamentos = (props:ViewProps) => (
+    const headerCardLancamentos = (props: ViewProps) => (
         <View {...props}>
-            <Text category="h5" style={{textAlign: 'center'}}>Últimos Lançamentos</Text>
+            <Text category="h5" style={{ textAlign: 'center' }}>Últimos Lançamentos</Text>
         </View>
     )
 
     return (
         <SafeAreaView style={[styles.container, styles.greenBackground]}>
             <Layout style={styles.container}>
-                <TopNavigation accessoryLeft={renderBackAction} accessoryRight={renderDrawerAction} alignment="center" title={props => <Text {...props} style={{color: 'white', fontSize: 18}}>FLUXO DE CAIXA</Text>} style={styles.greenBackground}/>
+                <TopNavigation accessoryLeft={renderBackAction} accessoryRight={renderDrawerAction} alignment="center" title={props => <Text {...props} style={{ color: 'white', fontSize: 18 }}>FLUXO DE CAIXA</Text>} style={styles.greenBackground} />
                 <Layout style={styles.container}>
                     <ScrollView contentContainerStyle={styles.scrollViewContainer} horizontal={false}>
-                        <Form />
-                        <Layout style={[styles.container, {width:'100%'}]}>
+                        <Form update={(inicio, fim) => { updateFluxoCaixa(inicio, fim) }} dateInicio={dateInicio} dateFinal={dateFinal} setDateFinal={setDateFinal} setDateInicio={setDateInicio} />
+                        <Layout style={[styles.container, { width: '100%' }]}>
                             <Card style={styles.card} header={headerCardLancamentos}>
-                                
+
                                 {/* Tabela de Fluxo de Caixa */}
-                                <Tabela data={transacao} update={()=>{
-                                    updateFluxoCaixa()
-                                }}/>
+                                <Tabela data={transacao} update={() => {
+                                    let inicio: string = toDateString(dateInicio)
+                                    let fim: string = toDateString(dateFinal)
+
+                                    updateFluxoCaixa(inicio, fim)
+                                }} />
 
                             </Card>
                         </Layout>

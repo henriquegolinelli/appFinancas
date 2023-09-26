@@ -7,6 +7,7 @@ import { storeStateType } from "../../redux"
 import { ModalDelete } from "../ModalDelete/ModalDelete"
 import { useState } from "react"
 import { Categoria } from "../../model/categoria"
+import { IconEnum } from "../../model/iconEnum"
 
 interface DataProps {
     id?: number
@@ -53,7 +54,7 @@ export const Tabela = (props:TabelaProps) => {
 
     const item = ({item, index}:{item:Transacao, index:number}) => {
         
-        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoriaId) ?? {nome: "", cor: ""}
+        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoriaId) ?? {nome: "", tipo: "", icone: IconEnum.BOX}
 
         let transacaoID: Transacao = stock.transacoes.find(tra => tra.id == item.id);
 

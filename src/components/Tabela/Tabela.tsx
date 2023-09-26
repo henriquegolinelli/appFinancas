@@ -20,6 +20,7 @@ interface DataProps {
 
 interface TabelaProps {
     data: Transacao[]
+    hasDelete: boolean
     update?: () => void
 }
 
@@ -100,7 +101,7 @@ export const Tabela = (props:TabelaProps) => {
             <Divider style={{borderWidth: 1}}></Divider>
             <List renderItem={item} data={props.data} scrollEnabled={false}></List>
             <ModalDelete
-                open={modalDeleteTransacao}
+                open={props.hasDelete ? modalDeleteTransacao : false}
                 setOpen={(open) => setModalDeleteTransacao(open)}
                 modalTitle="Excluir Transação"
                 idRemover={transacaoId}

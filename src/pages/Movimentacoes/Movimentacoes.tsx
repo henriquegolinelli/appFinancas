@@ -116,7 +116,7 @@ export const Movimentacoes = ({ navigation }) => {
             <Layout style={[styles.container, { width: "100%" }]}>
               <Card style={styles.card} header={headerCardMovimentacoes}>
                 {/* Tabela de Movimentações */}
-                <Tabela data={valoresTransacaoContas} />
+                <Tabela data={valoresTransacaoContas} hasDelete={false}/>
               </Card>
             </Layout>
           </ScrollView>

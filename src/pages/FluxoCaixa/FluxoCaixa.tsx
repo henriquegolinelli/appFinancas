@@ -10,7 +10,7 @@ import { storeStateType } from "../../redux"
 import { Transacao } from "../../model/transacao"
 import { ModalDelete } from "../../components/ModalDelete/ModalDelete"
 import { getTransacaoByDate, getTransacoes } from "../../redux/Redux.store"
-import { toDateString } from "../../common/util/dateUtils"
+import { isDateEqual, toDateString } from "../../common/util/dateUtils"
 
 const MenuIcon = (props: IconProps): IconElement => (
     <Icon {...props} name='menu' />
@@ -84,9 +84,16 @@ export const FluxoCaixaView = ({ navigation }) => {
                             <Card style={styles.card} header={headerCardLancamentos}>
 
                                 {/* Tabela de Fluxo de Caixa */}
-                                <Tabela data={transacao} update={() => {
-                                    let inicio: string = toDateString(dateInicio)
-                                    let fim: string = toDateString(dateFinal)
+                                <Tabela data={transacao} hasDelete={true} update={() => {
+                                    let inicio: string = "0"
+                                    let fim: string = "0"
+
+                                    let today = new Date()
+
+                                    if (!isDateEqual(dateInicio, today)) {
+                                        inicio = toDateString(dateInicio)
+                                        fim = toDateString(dateFinal)
+                                    }
 
                                     updateFluxoCaixa(inicio, fim)
                                 }} />

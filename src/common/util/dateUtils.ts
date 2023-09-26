@@ -39,3 +39,11 @@ export const toDateString = (data: Date): string => {
 
     return dateString
 }
+
+export const isDateEqual = (x: Date, y: Date): boolean => {
+    if (x.getDay() !== y.getDay()) return false
+    if (x.getMonth() !== y.getMonth()) return false
+    if (x.getFullYear() !== y.getFullYear()) return false
+
+    return true
+}

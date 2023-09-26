@@ -66,8 +66,6 @@ export const getTransacaoByDate = createAsyncThunk(
             transacoes = await getDBTransacoesByDate({ inicio: inicio, fim: fim })
         }
 
-        console.log(transacoes)
-
         return transacoes
     }
 )

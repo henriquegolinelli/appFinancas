@@ -3,9 +3,9 @@ import { Styles } from "../../../common/style/stylesheet";
 import { useState } from "react";
 import { toDateString } from "../../../common/util/dateUtils";
 
-export const Form = (props: { update: (inicio: string, fim: string) => void, dateInicio: Date, dateFinal: Date, setDateInicio: React.Dispatch<React.SetStateAction<Date>>, setDateFinal: React.Dispatch<React.SetStateAction<Date>>}) => {
+export const Form = (props: { update: (inicio: string, fim: string) => void, dateInicio: Date, dateFinal: Date, setDateInicio: React.Dispatch<React.SetStateAction<Date>>, setDateFinal: React.Dispatch<React.SetStateAction<Date>> }) => {
 
-  
+
 
   const updateTransacao = () => {
     let inicio: string = toDateString(props.dateInicio)
@@ -13,6 +13,14 @@ export const Form = (props: { update: (inicio: string, fim: string) => void, dat
 
     //
     props.update(inicio, fim)
+  }
+
+  const allTransacao = () => {
+    props.setDateInicio(new Date())
+    props.setDateFinal(new Date())
+
+    //
+    props.update("0", "0")
   }
 
 
@@ -34,6 +42,11 @@ export const Form = (props: { update: (inicio: string, fim: string) => void, dat
       ></Datepicker>
 
       <Button onPress={() => { updateTransacao() }}>Consultar</Button>
+      <Button style={{
+        marginTop: 5
+      }}
+        status="danger"
+        onPress={() => { allTransacao() }}> Mostrar Todas </Button>
     </Layout>
   );
 };

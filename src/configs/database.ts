@@ -7,14 +7,27 @@ import { IconEnum } from "../model/iconEnum"
 
 SQLite.enablePromise(true)
 
+/**
+ * Get DB
+ * 
+ * @returns DB
+ */
 export const getDB = async () => {
     return SQLite.openDatabase({ name: "teste", location: "default" })
 }
 
+/**
+ * Reset DB
+ */
 const resetDB = async () => {
     await SQLite.deleteDatabase({ name: "teste", location: "default" })
 }
 
+/**
+ * Get Transacoes
+ * 
+ * @returns Transcao[]
+ */
 export const getDBTransacoes = async (): Promise<Transacao[]> => {
     let transacoes: Transacao[] = []
 
@@ -31,6 +44,11 @@ export const getDBTransacoes = async (): Promise<Transacao[]> => {
     return transacoes
 }
 
+/**
+ * Get Transacoes by Date
+ * @param param0 
+ * @returns Transacao[]
+ */
 export const getDBTransacoesByDate = async ({inicio, fim}: {inicio: string, fim: string}): Promise<Transacao[]> => {
     let transacoes: Transacao[] = []
 
@@ -47,6 +65,12 @@ export const getDBTransacoesByDate = async ({inicio, fim}: {inicio: string, fim:
     return transacoes
 }
 
+/**
+ * Get Transacoes by Conta
+ * 
+ * @param contaId ContaId
+ * @returns Transacao[]
+ */
 export const getDBTransacoesByConta = async (contaId: number): Promise<Transacao[]> => {
     let transacoes: Transacao[] = []
 
@@ -63,6 +87,11 @@ export const getDBTransacoesByConta = async (contaId: number): Promise<Transacao
     return transacoes
 }
 
+/**
+ * Get Categorias
+ * 
+ * @returns Categoria[]
+ */
 export const getDBCategorias = async (): Promise<Categoria[]> => {
     let categorias: Categoria[] = []
 
@@ -79,6 +108,11 @@ export const getDBCategorias = async (): Promise<Categoria[]> => {
     return categorias
 }
 
+/**
+ * Get Contas
+ * 
+ * @returns Conta[]
+ */
 export const getDBContas = async (): Promise<Conta[]> => {
     let conta: Conta[] = []
 
@@ -95,7 +129,9 @@ export const getDBContas = async (): Promise<Conta[]> => {
     return conta
 }
 
-
+/**
+ * Init DB
+ */
 export const initDB = async () => {
     try {
         await resetDB()
@@ -127,25 +163,44 @@ export const initDB = async () => {
     await createConta({nome: "POUPANCA", tipo: "POUPANÇA"})
 }
 
+/**
+ * Create Transacao
+ * 
+ * @param transacao Transacao
+ */
 export const createTransacao = async (transacao: Transacao) => {
     let db = await getDB()
 
     await db.executeSql("INSERT INTO Transacoes(descricao, valor, data, tipo, categoriaId, contaId) VALUES(?, ?, ?, ?, ?, ?)", [transacao.descricao, transacao.valor, transacao.data, transacao.tipo, transacao.categoriaId, transacao.contaId])
 }
 
+/**
+ * Create Categoria
+ * 
+ * @param categoria Categoria
+ */
 export const createCategoria = async (categoria: Categoria) => {
     let db = await getDB()
 
     await db.executeSql("INSERT INTO Categorias(nome, tipo, icone) VALUES(?, ?, ?)", [categoria.nome, categoria.tipo, categoria.icone])
 }
 
+/**
+ * Create Conta
+ * 
+ * @param conta Conta
+ */
 export const createConta = async (conta: Conta) => {
     let db = await getDB()
 
     await db.executeSql("INSERT INTO Contas(nome, tipo) VALUES(?, ?)", [conta.nome, conta.tipo])
 }
 
-// Criar deleteCategoria
+/**
+ * Delete Conta
+ * 
+ * @param id Id
+ */
 export const deleteConta = async (id: number) => {
     let db = await getDB();
 
@@ -153,14 +208,22 @@ export const deleteConta = async (id: number) => {
     await db.executeSql("DELETE FROM Contas WHERE id = ?", [id])
 }
 
-// Criar deleteContas
+/**
+ * Delete Categoria
+ * 
+ * @param id Id
+ */
 export const deleteCategoria = async (id: number) => {
     let db = await getDB();
 
     await db.executeSql("DELETE FROM Categorias WHERE id = ?", [id]);
 }
 
-// Deleta transacao
+/**
+ * Delete Transacao
+ * 
+ * @param id Id
+ */
 export const deleteTransacao = async (id: number) => {
     let db = await getDB();
 

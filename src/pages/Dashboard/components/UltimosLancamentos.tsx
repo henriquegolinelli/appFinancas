@@ -27,7 +27,7 @@ export const UltimosLancamentos = () => {
     )
 
     //
-    const BoxIcon = ({props, category}:{props?:IconProps; category:IconEnum}): React.ReactElement => {
+    const BoxIcon = ({props, category}:{props?:IconProps; category:IconEnum | "swap-outline"}): React.ReactElement => {
         return <Icon {...props} name={category} fill='black' style={{ width: 30, height: 30 }}></Icon>
     }
 
@@ -42,7 +42,7 @@ export const UltimosLancamentos = () => {
                         <View style={styles.container}>
                             <Text>{item.data}</Text>
                             <Text> - </Text>
-                            <Text style={{ fontWeight: 'bold' }}>{item.descricao}</Text>
+                            <Text style={{ fontWeight: 'bold' }}>{item.categoriaId === 1 ? "Transferência" : item.descricao}</Text>
                         </View>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                             <BoxIcon category={categoria.icone}></BoxIcon>

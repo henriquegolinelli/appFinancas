@@ -141,19 +141,18 @@ export const initDB = async () => {
 
     let db = await getDB()
 
-    // Transacoes
-    await db.executeSql("CREATE TABLE Transacoes(id INTEGER PRIMARY KEY AUTOINCREMENT, descricao TEXT, valor DECIMAL(10,2), data DATETIME, tipo TEXT, categoriaId INT, contaId INT, FOREIGN KEY (CategoriaID) REFERENCES Categorias(ID), FOREIGN KEY (ContaID) REFERENCES Contas(ID))")
-
-    await createTransacao({ descricao: "Coxinha", valor: -20.00, tipo: TipoReceita.despesa, data: "01/06/2023", categoriaId: 1, contaId: 1 })
-    await createTransacao({ descricao: "Pera", valor: -5.00, tipo: TipoReceita.despesa, data: "03/07/2023", categoriaId: 1, contaId: 1 })
-
     // Categorias
     await db.executeSql("CREATE TABLE Categorias(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, tipo TEXT, icone TEXT)")
 
-    await createCategoria({nome: "Alimento", tipo: "despesa", icone: IconEnum.BOX})
-    await createCategoria({nome: "Higiene", tipo: "despesa", icone: IconEnum.MENU})
-    await createCategoria({nome: "Doação", tipo: "despesa", icone: IconEnum.BOX})
+    //
+    await createCategoria({nome: "Transferência", tipo: "despesa", icone: "swap-outline"})
 
+    //
+    await createCategoria({nome: "Alimento", tipo: "despesa", icone: IconEnum.SMILE})
+    await createCategoria({nome: "Higiene", tipo: "despesa", icone: IconEnum.HIGIENE})
+    await createCategoria({nome: "Doação", tipo: "despesa", icone: IconEnum.PERSON_PLUS})
+
+    //
     await createCategoria({nome: "Salário", tipo: 'receita', icone: IconEnum.ACTIVITY})
 
     // Contas
@@ -161,6 +160,17 @@ export const initDB = async () => {
 
     await createConta({nome: "PRINCIPAL", tipo: "CORRENTE"})
     await createConta({nome: "POUPANCA", tipo: "POUPANÇA"})
+
+    // Transacoes
+    await db.executeSql("CREATE TABLE Transacoes(id INTEGER PRIMARY KEY AUTOINCREMENT, descricao TEXT, valor DECIMAL(10,2), data DATETIME, tipo TEXT, categoriaId INT, contaId INT, FOREIGN KEY (CategoriaID) REFERENCES Categorias(ID), FOREIGN KEY (ContaID) REFERENCES Contas(ID))")
+
+    //
+    await createTransacao({ descricao: "59978b297bf1565656417c689147", valor: -50.00, tipo: TipoReceita.despesa, data: "01/06/2023", categoriaId: 1, contaId: 1 })
+    await createTransacao({ descricao: "59978b297bf1565656417c689147", valor: 50.00, tipo: TipoReceita.receita, data: "03/07/2023", categoriaId: 1, contaId: 2 })
+
+    //
+    await createTransacao({ descricao: "Coxinha", valor: -20.00, tipo: TipoReceita.despesa, data: "01/06/2023", categoriaId: 2, contaId: 1 })
+    await createTransacao({ descricao: "Pera", valor: -5.00, tipo: TipoReceita.despesa, data: "03/07/2023", categoriaId: 2, contaId: 1 })
 }
 
 /**
@@ -226,6 +236,24 @@ export const deleteCategoria = async (id: number) => {
  */
 export const deleteTransacao = async (id: number) => {
     let db = await getDB();
+
+    //
+    let result: SQLite.ResultSet = (await db.executeSql("SELECT * FROM Transacoes WHERE id = ?", [id]))[0]
+    let transacao: Transacao = result.rows.item(0)
+
+    //
+    if (transacao.categoriaId === 1) {
+        let descricao: string = transacao.descricao
+
+        //
+        console.log(descricao)
+
+        //
+        await db.executeSql("DELETE FROM Transacoes WHERE descricao = ?", [descricao]);
+
+        //
+        return
+    }
 
     await db.executeSql("DELETE FROM Transacoes WHERE id = ?", [id]);
 }

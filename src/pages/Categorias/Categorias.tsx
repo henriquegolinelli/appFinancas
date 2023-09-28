@@ -44,6 +44,8 @@ export const Categorias = ({ navigation }) => {
     for (let i: number = 0; i < categorias.length; i++) {
         let categoria = categorias[i]
 
+        if (categoria.id === 1) continue
+
         if (categoria.tipo === "receita") {
             catReceitas.push(categoria)
 
@@ -86,7 +88,7 @@ export const Categorias = ({ navigation }) => {
         <TopNavigationAction icon={BackIcon} onPress={() => { navigation.goBack() }} />
     )
 
-    const IconGood = ({props, category}:{props?:IconProps; category:IconEnum}): IconElement => (
+    const IconGood = ({props, category}:{props?:IconProps; category:IconEnum | "swap-outline"}): IconElement => (
         <Icon {...props} name={category} style={{ tintColor: "black", width: 30, height: 30 }}></Icon>
     )
 

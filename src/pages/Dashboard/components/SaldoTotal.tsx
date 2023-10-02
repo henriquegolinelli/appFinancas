@@ -93,7 +93,7 @@ export const SaldoTotal = () => {
             total += trancoes[i].valor
         }
 
-        let cor: string = total == 0 ? "#ffffff" : "#2f9e41"
+        let cor: string = total == 0 ? "#000" : "#2f9e41"
         cor = total < 0 ? "#cd191e" : cor
 
         return <Text style={{ textAlign: 'center', color: cor }} key={conta.id}>{getContaText(conta)}: R$ {total.toLocaleString('pt-br', { minimumFractionDigits: 2 })}</Text>

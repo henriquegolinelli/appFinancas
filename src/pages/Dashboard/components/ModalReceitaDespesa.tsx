@@ -29,6 +29,17 @@ export const ModalReceitaDespesa = (props: PropsModal) => {
     
     const categoriasReceita = categorias.filter(categoria => categoria.tipo === "receita");
     const categoriasDespesa = categorias.filter(categoria => categoria.tipo === "despesa");
+    
+    // remove transferencia da categoria despesas
+    categoriasDespesa.forEach(item => {
+        let index: number;
+        
+        if (item.nome === "Transferência") {
+            index = categoriasDespesa.indexOf(item);
+            categoriasDespesa.splice(index, 1);
+        }
+
+    });
 
     const contas: Conta[] = stock.contas
     

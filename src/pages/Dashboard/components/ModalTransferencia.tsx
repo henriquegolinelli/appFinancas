@@ -134,6 +134,9 @@ export const ModalTranferencia = (props: PropsModal) => {
 
         //
         updateTransacoes()
+
+        //
+        setModal(false)
     }
 
     //

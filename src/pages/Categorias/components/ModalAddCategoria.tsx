@@ -116,6 +116,8 @@ export const ModalAddCategoria = (props: ModalProps) => {
     props.update();
 
     setInputNomeCategoria("");
+
+    setModal(false);
   };
 
   return (

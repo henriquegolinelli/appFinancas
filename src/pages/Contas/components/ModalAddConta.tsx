@@ -41,6 +41,8 @@ export const ModalAddConta = (props:ModalAddContaProps) => {
         setNomeConta("")
         setTipoConta("")
         // setSaldoConta(0)
+
+        setModal(false)
     }
 
     return <Modal backdropStyle={styles.backdrop} visible={isActive} onBackdropPress={()=>setModal(false)} style={{width: '85%'}}>

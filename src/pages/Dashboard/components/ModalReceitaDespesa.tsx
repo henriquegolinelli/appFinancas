@@ -135,6 +135,7 @@ export const ModalReceitaDespesa = (props: PropsModal) => {
 
             setInputObsReceita("")
             setInputValorReceita(null)
+            setModal(false);
         }
 
         if (selectTipoTransacao.row == 1) { // Despesa
@@ -169,6 +170,7 @@ export const ModalReceitaDespesa = (props: PropsModal) => {
 
             setInputObsReceita("")
             setInputValorReceita(null)
+            setModal(false);
         }
         
     }

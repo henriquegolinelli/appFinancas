@@ -71,13 +71,13 @@ export const GastoMes = () => {
     )
 
     const renderItem = ({ item, index }: { item: CardItemGastoDoMesProps; index: number }) => {
-        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoria) ?? { nome: "", tipo: "", icone: IconEnum.BOX }
+        let categoria: Categoria = stock.categorias.find(value => value.id == item.categoria) ?? { nome: "", tipo: "", icone: IconEnum.HIGIENE }
 
         return <>
             <ListItem>
                 <View style={styles.container}>
                     <View style={styles.flexRowView}>
-                        <IconGood category={categoria.icone}></IconGood>
+                        <IconGood category={IconEnum[categoria.icone]}></IconGood>
                         <Text style={{ marginLeft: 20 }}>{categoria.nome}</Text>
                         <Text style={{ marginLeft: 'auto' }} status='danger'>R$ {item.valor.toFixed(2)}</Text>
                     </View>

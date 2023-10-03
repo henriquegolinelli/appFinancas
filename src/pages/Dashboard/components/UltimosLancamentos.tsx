@@ -28,7 +28,7 @@ export const UltimosLancamentos = () => {
 
     //
     const BoxIcon = ({props, category}:{props?:IconProps; category:IconEnum | "swap-outline"}): React.ReactElement => {
-        return <Icon {...props} name={category} fill='black' style={{ width: 30, height: 30 }}></Icon>
+        return <Icon {...props} name={category?category:'menu'} fill='black' style={{ width: 30, height: 30 }}></Icon>
     }
 
     //

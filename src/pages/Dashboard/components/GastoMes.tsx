@@ -66,7 +66,7 @@ export const GastoMes = () => {
     )
 
     //
-    const IconGood = ({props, category}:{props?:IconProps; category:IconEnum}): IconElement => (
+    const IconGood = ({props, category}:{props?:IconProps; category:IconEnum | 'swap-outline'}): IconElement => (
         <Icon {...props} name={category} fill="black" style={{ width: 30, height: 30 }}></Icon>
     )
 
@@ -77,7 +77,7 @@ export const GastoMes = () => {
             <ListItem>
                 <View style={styles.container}>
                     <View style={styles.flexRowView}>
-                        <IconGood category={IconEnum[categoria.icone]}></IconGood>
+                        <IconGood category={categoria.icone}></IconGood>
                         <Text style={{ marginLeft: 20 }}>{categoria.nome}</Text>
                         <Text style={{ marginLeft: 'auto' }} status='danger'>R$ {item.valor.toFixed(2)}</Text>
                     </View>

@@ -35,7 +35,7 @@ export const UltimosLancamentos = () => {
     const renderItem = ({ item, index }: { item: Transacao, index: number }) => {
         let categoria: Categoria = stock.categorias.find(value => value.id == item.categoriaId) ?? {nome: "", tipo: "", icone: IconEnum.BOX}
 
-        return <>
+        return <> 
             <ListItem>
                 <View style={styles.listItemContainer}>
                     <View style={{ gap: 5 }}>

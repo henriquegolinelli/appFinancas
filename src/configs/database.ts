@@ -1,9 +1,9 @@
 import SQLite from "react-native-sqlite-storage"
-import { TipoReceita } from "../model/tipoReceita"
-import { Transacao } from "../model/transacao"
-import { Conta } from "../model/conta"
-import { Categoria } from "../model/categoria"
-import { IconEnum } from "../model/iconEnum"
+import {TipoReceita} from "../model/tipoReceita"
+import {Transacao} from "../model/transacao"
+import {Conta} from "../model/conta"
+import {Categoria} from "../model/categoria"
+import {IconEnum} from "../model/iconEnum"
 
 SQLite.enablePromise(true)
 
@@ -13,14 +13,14 @@ SQLite.enablePromise(true)
  * @returns DB
  */
 export const getDB = async () => {
-    return SQLite.openDatabase({ name: "teste", location: "default" })
+    return SQLite.openDatabase({name: "teste", location: "default"})
 }
 
 /**
  * Reset DB
  */
 const resetDB = async () => {
-    await SQLite.deleteDatabase({ name: "teste", location: "default" })
+    await SQLite.deleteDatabase({name: "teste", location: "default"})
 }
 
 /**
@@ -134,12 +134,12 @@ export const getDBContas = async (): Promise<Conta[]> => {
  */
 export const initDB = async () => {
 
-    
+
     // try {
-    //     await resetDB()
-    // } catch (error) {
-    //     console.log(error)
-    // }
+    //    await resetDB()
+    //} catch (error) {
+    //   console.log(error)
+    //}
 
     let db = await getDB()
 
@@ -148,24 +148,24 @@ export const initDB = async () => {
     let count: {"count(*)": number} = result.rows.item(0)
 
     if (count["count(*)"] === 1) return
-    
+
     // Categorias
     await db.executeSql("CREATE TABLE IF NOT EXISTS Categorias(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, tipo TEXT, icone TEXT)")
-    
+
     //
     await createCategoria({nome: "Transferência", tipo: "despesa", icone: "swap-outline"})
-    
+
     //
     await createCategoria({nome: "Alimento", tipo: "despesa", icone: IconEnum.SMILE})
     await createCategoria({nome: "Higiene", tipo: "despesa", icone: IconEnum.HIGIENE})
     await createCategoria({nome: "Doação", tipo: "despesa", icone: IconEnum.PERSON_PLUS})
-    
+
     //
     await createCategoria({nome: "Salário", tipo: 'receita', icone: IconEnum.ACTIVITY})
-    
+
     // Contas
     await db.executeSql("CREATE TABLE IF NOT EXISTS Contas(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, tipo TEXT)")
-    
+
     await createConta({nome: "PRINCIPAL", tipo: "CORRENTE"})
     await createConta({nome: "POUPANCA", tipo: "POUPANÇA"})
 
@@ -173,12 +173,12 @@ export const initDB = async () => {
     await db.executeSql("CREATE TABLE IF NOT EXISTS Transacoes(id INTEGER PRIMARY KEY AUTOINCREMENT, descricao TEXT, valor DECIMAL(10,2), data DATETIME, tipo TEXT, categoriaId INT, contaId INT, FOREIGN KEY (CategoriaID) REFERENCES Categorias(ID), FOREIGN KEY (ContaID) REFERENCES Contas(ID))")
 
     //
-    await createTransacao({ descricao: "59978b297bf1565656417c689147", valor: -50.00, tipo: TipoReceita.despesa, data: "01/06/2023", categoriaId: 1, contaId: 1 })
-    await createTransacao({ descricao: "59978b297bf1565656417c689147", valor: 50.00, tipo: TipoReceita.receita, data: "03/07/2023", categoriaId: 1, contaId: 2 })
+    //await createTransacao({ descricao: "59978b297bf1565656417c689147", valor: -50.00, tipo: TipoReceita.despesa, data: "01/06/2023", categoriaId: 1, contaId: 1 })
+    //await createTransacao({ descricao: "59978b297bf1565656417c689147", valor: 50.00, tipo: TipoReceita.receita, data: "03/07/2023", categoriaId: 1, contaId: 2 })
 
     //
-    await createTransacao({ descricao: "Coxinha", valor: -20.00, tipo: TipoReceita.despesa, data: "01/06/2023", categoriaId: 2, contaId: 1 })
-    await createTransacao({ descricao: "Pera", valor: -5.00, tipo: TipoReceita.despesa, data: "03/07/2023", categoriaId: 2, contaId: 1 })
+    //await createTransacao({ descricao: "Coxinha", valor: -20.00, tipo: TipoReceita.despesa, data: "01/06/2023", categoriaId: 2, contaId: 1 })
+    //await createTransacao({ descricao: "Pera", valor: -5.00, tipo: TipoReceita.despesa, data: "03/07/2023", categoriaId: 2, contaId: 1 })
 }
 
 /**

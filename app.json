@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "FinancasIFPR",
+    "name": "Finanças IFPR",
     "slug": "FinancasIFPR",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/IFLOGO.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash-if.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.FinancasIFPR"
+      "package": "br.edu.ifpr.ivaipora.FinancasIFPR"
     },
     "web": {
       "favicon": "./assets/favicon.png"

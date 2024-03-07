@@ -4,7 +4,7 @@
     "slug": "FinancasIFPR",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/IFLOGO.png",
+    "icon": "./assets/IFLOGO-square.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash-if.png",
@@ -18,10 +18,6 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
       "package": "br.edu.ifpr.ivaipora.FinancasIFPR"
     },
     "web": {

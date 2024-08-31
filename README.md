@@ -61,3 +61,5 @@ Projeto escolar de desenvolvimento de App de controle financeiro
     $ npm run android
 ```
 <p>Após o projeto ter iniciado, caso deseje executar em outro dispositivo, execute o comando <code>shift+a</code> no terminal para aparecer a lista de dispositivos disponíveis.</p>
+
+<p>Caso ocorra algum problema durante a build, apague a pasta `Android`, verifique os requisitos anteriores e execute novamente.</p>
